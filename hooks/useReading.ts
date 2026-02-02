@@ -13,10 +13,9 @@ export function useStartReading() {
       const { data } = await readingApi.startReading(payload);
       return data as Book;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: booksKeys.detail(variables.id),
-      });
+    onSuccess: (data, variables) => {
+      // We update the cache directly for faster UX
+      queryClient.setQueryData(booksKeys.detail(variables.id), data);
       toast.success('Reading started!');
     },
     onError: (error: any) => {
@@ -34,10 +33,8 @@ export function useFinishReading() {
       const { data } = await readingApi.finishReading(payload);
       return data as Book;
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: booksKeys.detail(variables.id),
-      });
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(booksKeys.detail(variables.id), data);
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
       toast.success('Reading progress saved!');
     },

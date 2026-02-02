@@ -1,13 +1,24 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  keepPreviousData,
+} from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { booksApi } from '@/services/clientApi';
 import { BooksFilters, Book, RecommendedBooksResponse } from '@/types';
 
-// ============ Query Keys ============
+// ============ Query Keys Factory ============
 export const booksKeys = {
   all: ['books'] as const,
   recommended: (filters?: BooksFilters) =>
-    [...booksKeys.all, 'recommended', filters] as const,
+    [
+      ...booksKeys.all,
+      'recommended',
+      filters?.page,
+      filters?.title,
+      filters?.author,
+    ] as const,
   library: (status?: string) => [...booksKeys.all, 'library', status] as const,
   detail: (id: string) => [...booksKeys.all, 'detail', id] as const,
 };
@@ -20,6 +31,8 @@ export function useRecommendedBooks(filters?: BooksFilters) {
       const { data } = await booksApi.getRecommended(filters);
       return data as RecommendedBooksResponse;
     },
+    placeholderData: keepPreviousData, // Keeps previous data when paginating
+    refetchOnMount: false, // Do not prompt when mounting (for SSR)
   });
 }
 
@@ -32,6 +45,8 @@ export function useOwnBooks(status?: string) {
       const { data } = await booksApi.getOwnBooks(params);
       return data as Book[];
     },
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
   });
 }
 
@@ -44,6 +59,7 @@ export function useBookById(id: string) {
       return data as Book;
     },
     enabled: !!id,
+    refetchOnMount: false,
   });
 }
 
