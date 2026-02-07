@@ -1,71 +1,85 @@
+//app/api/books/[...path]/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { api } from '@/services/api';
-import { isAxiosError } from 'axios';
+import { api, getErrorMessage, getErrorStatus } from '@/app/api/api';
 
-async function proxyRequest(
-  req: NextRequest,
-  params: { path: string[] },
-  method: 'GET' | 'POST' | 'DELETE'
-) {
+type Props = {
+  params: Promise<{ path: string[] }>;
+};
+
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export async function GET(request: NextRequest, { params }: Props) {
+  const { path } = await params;
+  const apiPath = `/books/${path.join('/')}`;
+
+  const searchParams = request.nextUrl.searchParams;
+  const queryParams: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    queryParams[key] = value;
+  });
+
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('accessToken')?.value;
-
-    if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const path = `/books/${params.path.join('/')}`;
-    const url = new URL(req.url);
-
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-      params: Object.fromEntries(url.searchParams),
-    };
-
-    let response;
-    if (method === 'GET') {
-      response = await api.get(path, config);
-    } else if (method === 'POST') {
-      const body = await req.json().catch(() => ({}));
-      response = await api.post(path, body, config);
-    } else {
-      response = await api.delete(path, config);
-    }
-
-    return NextResponse.json(response.data);
+    const headers = await getAuthHeaders();
+    const { data } = await api.get(apiPath, { params: queryParams, headers });
+    return NextResponse.json(data);
   } catch (error) {
-    if (isAxiosError(error)) {
-      return NextResponse.json(
-        { error: error.response?.data?.message || 'Request failed' },
-        { status: error.response?.status || 500 }
-      );
-    }
     return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
+      { error: getErrorMessage(error) },
+      { status: getErrorStatus(error) }
     );
   }
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, await params, 'GET');
+export async function POST(request: NextRequest, { params }: Props) {
+  const { path } = await params;
+  const apiPath = `/books/${path.join('/')}`;
+
+  try {
+    const headers = await getAuthHeaders();
+    let body = null;
+    try {
+      body = await request.json();
+    } catch {
+      // Reqest witout body
+    }
+
+    const { data } = await api.post(apiPath, body, { headers });
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      { error: getErrorMessage(error) },
+      { status: getErrorStatus(error) }
+    );
+  }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, await params, 'POST');
-}
+export async function DELETE(request: NextRequest, { params }: Props) {
+  const { path } = await params;
+  const apiPath = `/books/${path.join('/')}`;
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, await params, 'DELETE');
+  const searchParams = request.nextUrl.searchParams;
+  const queryParams: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    queryParams[key] = value;
+  });
+
+  try {
+    const headers = await getAuthHeaders();
+    const { data } = await api.delete(apiPath, {
+      params: queryParams,
+      headers,
+    });
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      { error: getErrorMessage(error) },
+      { status: getErrorStatus(error) }
+    );
+  }
 }

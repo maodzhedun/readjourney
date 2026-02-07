@@ -1,6 +1,8 @@
+//app/api/users/me/route.ts
+
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { api } from '@/services/api';
+import { api } from '@/app/api/api';
 import { isAxiosError } from 'axios';
 
 export async function GET() {

@@ -16,5 +16,5 @@ export default function Dashboard({ children, className }: DashboardProps) {
     >
       {children}
     </aside>
-  );
+);
 }

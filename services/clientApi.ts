@@ -1,12 +1,15 @@
+//service/clientApi.ts
+
+// import axios from 'axios';
 import axios from 'axios';
 
-// For client component - requests by Next.js API Routes
 const clientApi = axios.create({
   baseURL: '/api',
   withCredentials: true,
 });
 
 export default clientApi;
+
 
 // ============ Auth API ============
 export const authApi = {
@@ -21,6 +24,8 @@ export const authApi = {
   getSession: () => clientApi.get('/auth/session'),
 
   getCurrentUser: () => clientApi.get('/users/me'),
+
+  refresh: () => clientApi.post('/auth/refresh'),
 };
 
 // ============ Books API ============
@@ -37,7 +42,7 @@ export const booksApi = {
 
   addBookById: (id: string) => clientApi.post(`/books/add/${id}`),
 
-  removeBook: (id: string) => clientApi.delete(`/books/${id}`),
+  removeBook: (id: string) => clientApi.delete(`/books/remove/${id}`),
 
   getOwnBooks: (params?: { status?: string }) =>
     clientApi.get('/books/own', { params }),

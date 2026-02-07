@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { api } from '@/services/api';
+import { api } from '@/app/api/api';
 
 export async function POST() {
   try {

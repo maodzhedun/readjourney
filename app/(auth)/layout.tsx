@@ -1,5 +1,3 @@
-//app/(auth)/layout.tsx
-
 import Image from 'next/image';
 
 export default function AuthLayout({
@@ -17,15 +15,14 @@ export default function AuthLayout({
 
         {/* Image Section - Hidden on mobile */}
         <div className="hidden flex-1 items-center justify-center rounded-[30px] bg-[#1f1f1f] lg:flex">
-          <div className="relative h-[560px] w-[405px]">
-            <Image
-              src="/images/auth-phone.png"
-              alt="Read Journey App"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+          <Image
+            src="/images/auth-phone.png"
+            alt="Read Journey App"
+            width={405}
+            height={656}
+            className="h-auto w-auto object-contain"
+            priority
+          />
         </div>
       </div>
     </main>

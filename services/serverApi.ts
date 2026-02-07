@@ -1,10 +1,12 @@
+//service/servertApi.ts
+
 // API for Server Components with cookie support
 import { cookies } from 'next/headers';
-import { api } from './api';
+import { api } from '@/app/api/api';
 import { Book, RecommendedBooksResponse, BooksFilters } from '@/types';
 
 // Helper for getting a token from cookies
-async function getAuthHeaders() {
+async function getAuthHeaders(): Promise<Record<string, string>> {
   const cookieStore = await cookies();
   const token = cookieStore.get('accessToken')?.value;
   return token ? { Authorization: `Bearer ${token}` } : {};
@@ -33,4 +35,10 @@ export async function fetchBookById(id: string): Promise<Book> {
   const headers = await getAuthHeaders();
   const { data } = await api.get(`/books/${id}`, { headers });
   return data;
+}
+
+export async function checkAuth(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+  return !!token;
 }

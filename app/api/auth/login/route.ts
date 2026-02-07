@@ -1,36 +1,52 @@
+//app/api/auth/login/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { api } from '@/services/api';
-import { isAxiosError } from 'axios';
+import { api, getErrorMessage, getErrorStatus } from '@/app/api/api';
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json();
-    const response = await api.post('/users/signin', body);
+    const body = await request.json();
+    const { email, password } = body;
 
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    // Request to external API
+    const { data } = await api.post('/users/signin', { email, password });
+
+    // Store tokens in HTTP-only cookies
     const cookieStore = await cookies();
-    const { token, ...user } = response.data;
 
-    // Save token in HTTP-only cookie
-    cookieStore.set('accessToken', token, {
+    cookieStore.set('accessToken', data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
+      maxAge: 60 * 60, // 1 hour
     });
 
-    return NextResponse.json(user);
-  } catch (error) {
-    if (isAxiosError(error)) {
-      return NextResponse.json(
-        { error: error.response?.data?.message || 'Login failed' },
-        { status: error.response?.status || 401 }
-      );
+    if (data.refreshToken) {
+      cookieStore.set('refreshToken', data.refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      });
     }
+
+    return NextResponse.json({
+      user: { name: data.name, email: data.email },
+    });
+  } catch (error) {
     return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
+      { error: getErrorMessage(error) },
+      { status: getErrorStatus(error) }
     );
   }
 }
