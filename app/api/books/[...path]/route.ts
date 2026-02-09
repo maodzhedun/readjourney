@@ -42,7 +42,7 @@ export async function POST(request: NextRequest, { params }: Props) {
 
   try {
     const headers = await getAuthHeaders();
-    let body = null;
+    let body = undefined;
     try {
       body = await request.json();
     } catch {
@@ -51,7 +51,14 @@ export async function POST(request: NextRequest, { params }: Props) {
 
     const { data } = await api.post(apiPath, body, { headers });
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (error: any) {
+    // errors
+    console.log('=== API Error ===');
+    console.log('Path:', apiPath);
+    console.log('Status:', error.response?.status);
+    console.log('Response:', error.response?.data);
+    console.log('=================');
+
     return NextResponse.json(
       { error: getErrorMessage(error) },
       { status: getErrorStatus(error) }

@@ -1,3 +1,5 @@
+//components/BookDetailsModal.tsx
+
 'use client';
 
 import Image from 'next/image';
@@ -36,6 +38,7 @@ export default function BookDetailsModal({
             src={book.imageUrl}
             alt={book.title}
             fill
+            sizes="140px"
             className="object-cover"
           />
         </div>
