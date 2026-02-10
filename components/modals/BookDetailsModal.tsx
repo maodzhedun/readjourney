@@ -1,4 +1,4 @@
-//components/BookDetailsModal.tsx
+//components/modals/BookDetailsModal.tsx
 
 'use client';
 

@@ -1,5 +1,7 @@
 //components/modals/BookFinishedModal.tsx
 
+'use client';
+
 import Link from 'next/link';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
@@ -23,9 +25,11 @@ export default function BookFinishedModal({
         <h3 className="mb-2 text-xl font-bold text-[#f9f9f9]">
           Congratulations!
         </h3>
+        <p className="mb-2 text-sm text-[#686868]">
+          You have finished reading the book!
+        </p>
         <p className="mb-6 text-sm text-[#686868]">
-          You have finished reading the book! Great job staying consistent with
-          your reading goals.
+          Great job staying consistent with your reading goals.
         </p>
 
         {/* Actions */}

@@ -1,8 +1,11 @@
 //components/modals/AddBookSuccessModal.tsx
 
+'use client';
+
 import Image from 'next/image';
 import { Book } from '@/types';
 import Modal from '@/components/ui/Modal';
+import Button from '@/components/ui/Button';
 
 interface AddBookSuccessModalProps {
   book: Book;
@@ -44,6 +47,8 @@ export default function AddBookSuccessModal({
             <p className="text-xs text-[#686868]">{book.author}</p>
           </div>
         </div>
+
+        <Button onClick={onClose}>Got it</Button>
       </div>
     </Modal>
   );
