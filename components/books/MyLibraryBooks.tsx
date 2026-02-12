@@ -21,14 +21,15 @@ export default function MyLibraryBooks({
   }
 
   return (
-    <ul className="grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4 lg:grid-cols-5">
-      {books.map(book => (
+    <ul className="grid grid-cols-2 gap-x-5 gap-y-6 2xl:grid-cols-5 lg:grid-cols-5">
+      {books.map((book, index) => (
         <li key={book._id}>
           <MyBook
             book={book}
             onRemove={() => onRemove(book._id)}
             onStartReading={() => onStartReading(book)}
             isRemoving={isRemoving}
+            isPriority={index < 5}
           />
         </li>
       ))}

@@ -121,12 +121,12 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
           My reading
         </h2>
 
-        <div className="relative mb-4 aspect-[137/208] w-[137px] overflow-hidden rounded-lg bg-[#262626] md:w-[169px]">
+        <div className="relative mb-4 aspect-[137/208] w-[137px] overflow-hidden rounded-lg bg-[#262626] md:w-[169px] lg:w-[224px]">
           <Image
             src={book.imageUrl}
             alt={book.title}
             fill
-            sizes="(max-width: 768px) 137px, 169px"
+            sizes="(max-width: 768px) 137px, (max-width: 1439px) 169px, 224px"
             className="object-cover"
           />
         </div>

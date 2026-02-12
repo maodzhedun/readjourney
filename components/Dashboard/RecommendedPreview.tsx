@@ -24,14 +24,16 @@ export default function RecommendedPreview() {
         </div>
       ) : (
         <ul className="flex gap-5">
-          {previewBooks.map(book => (
+          {previewBooks.map((book, index) => (
             <li key={book._id} className="w-[71px]">
               <div className="relative mb-2 h-[107px] w-[71px] overflow-hidden rounded-lg bg-[#3e3e3e]">
                 <Image
                   src={book.imageUrl}
                   alt={book.title}
                   fill
+                  sizes="71px"
                   className="object-cover"
+                  priority={index < 3}
                 />
               </div>
               <h4 className="truncate text-xs font-bold text-[#f9f9f9]">

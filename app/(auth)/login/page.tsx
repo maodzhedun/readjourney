@@ -1,4 +1,5 @@
 //app/(auth)/login/page.tsx
+
 import { Metadata } from 'next';
 import LoginForm from '@/components/forms/LoginForm';
 

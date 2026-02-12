@@ -1,8 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import { AxiosError } from 'axios';
 import { readingApi } from '@/services/clientApi';
 import { booksKeys } from './useBooks';
 import { Book, StartReadingPayload, FinishReadingPayload } from '@/types';
+
+interface ApiErrorResponse {
+  error?: string;
+  message?: string;
+}
 
 // ============ Start Reading ============
 export function useStartReading() {
@@ -18,7 +24,7 @@ export function useStartReading() {
       queryClient.setQueryData(booksKeys.detail(variables.id), data);
       toast.success('Reading started!');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to start reading');
     },
   });
@@ -38,7 +44,7 @@ export function useFinishReading() {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
       toast.success('Reading progress saved!');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to save progress');
     },
   });
@@ -63,7 +69,7 @@ export function useDeleteReading() {
       queryClient.invalidateQueries({ queryKey: booksKeys.detail(bookId) });
       toast.success('Reading entry deleted');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to delete entry');
     },
   });

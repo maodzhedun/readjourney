@@ -1,3 +1,5 @@
+//components/forms/LoginForm.tsx
+
 'use client';
 
 import Link from 'next/link';
@@ -33,8 +35,7 @@ export default function LoginForm() {
   return (
     <div className="flex h-full flex-col">
       <h1 className="mb-5 text-[32px] font-bold leading-tight text-[#f9f9f9] md:mb-10 md:text-[64px]">
-        Expand your mind, reading{' '}
-        <span className="rounded-lg bg-[#f9f9f9]/5 px-2">a book</span>
+        Expand your mind, reading <span className="text-[#686868]">a book</span>
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mb-4 space-y-4">

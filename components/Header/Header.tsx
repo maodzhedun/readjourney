@@ -19,16 +19,18 @@ export default function Header() {
   return (
     <header className="rounded-[15px] bg-[#1f1f1f] px-5 py-3 md:px-4 md:py-4">
       <div className="flex items-center justify-between">
-        {/* Logo */}
-        <Logo />
+        {/* Logo - icon on mobile, full on tablet+ */}
+        <Logo showText className="hidden md:flex" />
+        <Logo showText={false} className="md:hidden" />
 
         {/* Desktop Navigation */}
-        <UserNav className="hidden lg:block" />
+        <UserNav className="hidden lg:flex" />
 
         {/* Right Section */}
-        <div className="flex items-center gap-4">
-          {/* User Avatar */}
-          <UserBar showName />
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* User Avatar - with name on desktop only */}
+          <UserBar showName className="hidden lg:flex" />
+          <UserBar className="lg:hidden" />
 
           {/* Desktop Logout */}
           <Button
@@ -36,7 +38,7 @@ export default function Header() {
             isLoading={isPending}
             variant="outline"
             size="sm"
-            className="hidden border-[#f9f9f9]/20 lg:flex"
+            className="hidden lg:flex"
           >
             Log out
           </Button>
@@ -44,7 +46,7 @@ export default function Header() {
           {/* Mobile Burger Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="text-[#f9f9f9] transition-colors hover:text-[#f9f9f9]/70 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center text-white transition-colors hover:text-white/70 lg:hidden"
             aria-label="Open menu"
           >
             <Menu size={28} />

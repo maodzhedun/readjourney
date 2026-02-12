@@ -22,14 +22,14 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={!canGoPrev}
         className={clsx(
-          'flex h-10 w-10 items-center justify-center rounded-full border transition-colors',
+          'flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border transition-colors',
           canGoPrev
             ? 'border-[#f9f9f9]/20 text-[#f9f9f9] hover:bg-[#f9f9f9]/10'
             : 'cursor-not-allowed border-[#3e3e3e] text-[#3e3e3e]'
         )}
         aria-label="Previous page"
       >
-        <ChevronLeft size={20} />
+        <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
       </button>
 
       {/* Page Info */}
@@ -42,14 +42,14 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={!canGoNext}
         className={clsx(
-          'flex h-10 w-10 items-center justify-center rounded-full border transition-colors',
+          'flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-full border transition-colors',
           canGoNext
             ? 'border-[#f9f9f9]/20 text-[#f9f9f9] hover:bg-[#f9f9f9]/10'
             : 'cursor-not-allowed border-[#3e3e3e] text-[#3e3e3e]'
         )}
         aria-label="Next page"
       >
-        <ChevronRight size={20} />
+        <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
       </button>
     </div>
   );

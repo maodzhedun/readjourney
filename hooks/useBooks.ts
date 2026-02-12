@@ -5,8 +5,14 @@ import {
   keepPreviousData,
 } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import { AxiosError } from 'axios';
 import { booksApi } from '@/services/clientApi';
 import { BooksFilters, Book, RecommendedBooksResponse } from '@/types';
+
+interface ApiErrorResponse {
+  error?: string;
+  message?: string;
+}
 
 // ============ Query Keys Factory ============
 export const booksKeys = {
@@ -80,7 +86,7 @@ export function useAddBook() {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
       toast.success('Book added to library!');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
     },
   });
@@ -99,7 +105,7 @@ export function useAddBookById() {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
       toast.success('Book added to library!');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
     },
   });
@@ -118,7 +124,7 @@ export function useRemoveBook() {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
       toast.success('Book removed from library');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to remove book');
     },
   });

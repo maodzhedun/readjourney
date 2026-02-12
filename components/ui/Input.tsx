@@ -16,33 +16,41 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="w-full">
-        {label && (
-          <label className="mb-1 block text-xs text-[#686868]">{label}</label>
-        )}
-        <div className="relative">
+        <div
+          className={clsx(
+            'flex items-center rounded-xl border bg-[#262626] px-3 py-3 transition-colors md:px-4 md:py-4',
+            error
+              ? 'border-[#e90516]'
+              : 'border-[#3e3e3e] focus-within:border-[#f9f9f9]/40'
+          )}
+        >
+          {/* Label inside input */}
+          {label && (
+            <span className="mr-2 shrink-0 text-sm text-[#686868]">{label}</span>
+          )}
+
           <input
             ref={ref}
             type={inputType}
             className={clsx(
-              'w-full rounded-xl border bg-[#262626] px-3 py-3 text-sm text-[#f9f9f9] outline-none transition-colors placeholder:text-[#686868] md:px-4 md:py-4',
-              error
-                ? 'border-[#e90516] focus:border-[#e90516]'
-                : 'border-[#3e3e3e] focus:border-[#f9f9f9]/40',
-              isPassword && showPasswordToggle && 'pr-12',
+              'w-full bg-transparent text-sm text-[#f9f9f9] outline-none placeholder:text-[#686868]',
               className
             )}
             {...props}
           />
+
+          {/* Password toggle */}
           {isPassword && showPasswordToggle && (
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#686868] hover:text-[#f9f9f9]"
+              className="ml-2 shrink-0 text-[#686868] hover:text-[#f9f9f9]"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           )}
         </div>
+
         {error && <p className="mt-1 text-xs text-[#e90516]">{error}</p>}
       </div>
     );

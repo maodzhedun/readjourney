@@ -39,6 +39,7 @@ export default function AddBookSuccessModal({
               src={book.imageUrl}
               alt={book.title}
               fill
+              sizes="40px"
               className="object-cover"
             />
           </div>

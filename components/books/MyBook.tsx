@@ -9,13 +9,14 @@ interface MyBookProps {
   onRemove: () => void;
   onStartReading: () => void;
   isRemoving?: boolean;
+  isPriority?: boolean;
 }
 
 export default function MyBook({
   book,
   onRemove,
   onStartReading,
-  isRemoving,
+  isRemoving, isPriority
 }: MyBookProps) {
   // Define the status colour
   const getStatusColor = () => {
@@ -40,8 +41,9 @@ export default function MyBook({
           src={book.imageUrl}
           alt={book.title}
           fill
-          sizes="(max-width: 768px) 137px, 180px"
+          sizes="(max-width: 767px) 137px, (max-width: 1439px) 153px, 180px"
           className="object-cover transition-transform group-hover:scale-105"
+          priority={isPriority}
         />
       </div>
 

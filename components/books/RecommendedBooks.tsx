@@ -1,3 +1,5 @@
+//components/books/ReccomendedBiiks.tsx
+
 import { Book } from '@/types';
 import BookCard from './BookCard';
 
@@ -15,7 +17,7 @@ export default function RecommendedBooks({
   }
 
   return (
-    <ul className="grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4 lg:grid-cols-5">
+    <ul className="grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4 md:gap-y-7 2xl:grid-cols-5">
       {books.map((book, index) => (
         <li key={book._id}>
           <BookCard

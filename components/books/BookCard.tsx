@@ -1,4 +1,7 @@
+//components/books/BookCard.tsx
+
 import Image from 'next/image';
+import { Trash2 } from 'lucide-react';
 import { Book } from '@/types';
 
 interface BookCardProps {
@@ -22,6 +25,7 @@ export default function BookCard({
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? e => e.key === 'Enter' && onClick() : undefined}
     >
       {/* Book Cover */}
       <div className="relative mb-2 aspect-[137/208] overflow-hidden rounded-lg bg-[#262626]">
@@ -29,7 +33,7 @@ export default function BookCard({
           src={book.imageUrl}
           alt={book.title}
           fill
-          sizes="(max-width: 768px) 137px, 180px"
+          sizes="(max-width: 767px) 137px, (max-width: 1439px) 153px, 180px"
           className="object-cover transition-transform group-hover:scale-105"
           priority={isPriority}
         />
@@ -41,10 +45,10 @@ export default function BookCard({
               e.stopPropagation();
               onDelete();
             }}
-            className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#e90516] text-white opacity-0 transition-opacity group-hover:opacity-100"
+            className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#e90516]/80 text-white opacity-0 transition-opacity hover:bg-[#e90516] group-hover:opacity-100"
             aria-label="Delete book"
           >
-            🗑️
+            <Trash2 size={14} />
           </button>
         )}
       </div>
@@ -53,7 +57,9 @@ export default function BookCard({
       <h3 className="truncate text-sm font-bold text-[#f9f9f9]">
         {book.title}
       </h3>
-      <p className="truncate text-xs text-[#686868]">{book.author}</p>
+      <p className="truncate text-[10px] text-[#686868] md:text-xs">
+        {book.author}
+      </p>
 
       {/* Status Badge */}
       {showStatus && book.status && (

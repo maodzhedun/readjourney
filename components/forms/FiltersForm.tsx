@@ -1,8 +1,7 @@
+// components/forms/FiltersForm.tsx
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { filtersSchema } from '@/utils/validationSchemas';
 import { BooksFilters } from '@/types';
 
 import Input from '@/components/ui/Input';
@@ -14,24 +13,28 @@ interface FiltersFormProps {
   isLoading?: boolean;
 }
 
+interface FiltersFormData {
+  title: string;
+  author: string;
+}
+
 export default function FiltersForm({
   onFilter,
   onReset,
   isLoading,
 }: FiltersFormProps) {
-  const { register, handleSubmit, reset } = useForm<BooksFilters>({
-    resolver: yupResolver(filtersSchema),
+  const { register, handleSubmit, reset } = useForm<FiltersFormData>({
     defaultValues: {
       title: '',
       author: '',
     },
   });
 
-  const onSubmit = (data: BooksFilters) => {
+  const onSubmit = (data: FiltersFormData) => {
     const filters: BooksFilters = {};
 
-    if (data.title?.trim()) filters.title = data.title.trim();
-    if (data.author?.trim()) filters.author = data.author.trim();
+    if (data.title.trim()) filters.title = data.title.trim();
+    if (data.author.trim()) filters.author = data.author.trim();
 
     onFilter(filters);
   };
@@ -49,13 +52,11 @@ export default function FiltersForm({
           {...register('title')}
           label="Book title:"
           placeholder="Enter text"
-          className="py-3"
         />
         <Input
           {...register('author')}
           label="The author:"
           placeholder="Enter text"
-          className="py-3"
         />
 
         <div className="flex gap-2 pt-2">

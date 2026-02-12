@@ -1,9 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { AxiosError } from 'axios';
 import { authApi } from '@/services/clientApi';
 import { useAuthStore } from '@/store/authStore';
 import { RegisterCredentials, AuthCredentials } from '@/types';
+
+interface ApiErrorResponse {
+  error?: string;
+  message?: string;
+}
 
 // ============ Register ============
 export function useRegister() {
@@ -20,7 +26,7 @@ export function useRegister() {
       toast.success('Registration successful!');
       router.push('/recommended');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Registration failed');
     },
   });
@@ -41,7 +47,7 @@ export function useLogin() {
       toast.success('Welcome back!');
       router.push('/recommended');
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Login failed');
     },
   });
