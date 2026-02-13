@@ -1,4 +1,7 @@
-//components/reading/ProgressCircle.tsx
+// components/reading/ProgressCircle.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
 
 interface ProgressCircleProps {
   percentage: number;
@@ -11,16 +14,35 @@ export default function ProgressCircle({
   pagesRead,
   totalPages,
 }: ProgressCircleProps) {
-  // SVG parameters
-  const size = 150;
-  const strokeWidth = 10;
+  const [size, setSize] = useState(116);
+  const [strokeWidth, setStrokeWidth] = useState(8);
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth >= 1440) {
+        setSize(168);
+        setStrokeWidth(12);
+      } else if (window.innerWidth >= 768) {
+        setSize(138);
+        setStrokeWidth(10);
+      } else {
+        setSize(116);
+        setStrokeWidth(8);
+      }
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
     <div className="flex flex-col items-center">
-      <div className="relative" style={{ width: size, height: size }}>
+      <div className="relative h-[116px] w-[116px] md:h-[138px] md:w-[138px] 2xl:h-[168px] 2xl:w-[168px]">
         <svg
           className="-rotate-90 transform"
           width={size}
@@ -54,7 +76,7 @@ export default function ProgressCircle({
 
         {/* Center Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold text-[#f9f9f9]">
+          <span className="text-lg font-bold text-[#f9f9f9] md:text-xl 2xl:text-2xl">
             {percentage}%
           </span>
         </div>
