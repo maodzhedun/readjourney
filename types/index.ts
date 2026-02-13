@@ -65,7 +65,7 @@ export interface RecommendedBooksResponse {
   perPage: number;
 }
 
-export interface OwnBooksResponse 
+export interface OwnBooksResponse {
   results: Book[];
 }
 

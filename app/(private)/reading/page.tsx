@@ -16,7 +16,12 @@ type Props = {
 
 export const metadata: Metadata = {
   title: 'Reading',
-  description: 'Track your current reading progress.',
+  description:
+    'Track your current reading progress. Start and stop reading sessions, view statistics and diary.',
+  openGraph: {
+    title: 'Reading Progress | Read Journey',
+    description: 'Track your current reading progress.',
+  },
 };
 
 export default async function ReadingPage({ searchParams }: Props) {

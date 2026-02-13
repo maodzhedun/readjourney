@@ -10,7 +10,12 @@ import RecommendedClient from './RecommendedClient';
 
 export const metadata: Metadata = {
   title: 'Recommended Books',
-  description: 'Discover new books to read based on your interests.',
+  description:
+    'Discover new books to read based on your interests. Browse our curated collection of recommended books.',
+  openGraph: {
+    title: 'Recommended Books | Read Journey',
+    description: 'Discover new books to read based on your interests.',
+  },
 };
 
 export default async function RecommendedPage() {
