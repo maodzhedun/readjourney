@@ -38,8 +38,7 @@ export default function AuthLayout({
             alt="Read Journey App"
             width={366}
             height={799}
-            className="object-contain"
-            style={{ width: '366px', height: 'auto' }}
+            className="h-auto w-auto object-contain"
             priority
           />
         </div>
