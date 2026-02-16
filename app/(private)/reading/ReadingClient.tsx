@@ -138,7 +138,7 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
         {hasCompletedProgress ? (
           <ReadingDetails
             bookId={book._id}
-            progress={book.progress}
+            progress={book.progress || []}
             totalBookPages={book.totalPages}
           />
         ) : (
