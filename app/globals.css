@@ -1,17 +1,8 @@
 @import 'tailwindcss';
+@config "../tailwind.config.js";
 
-:root {
-  --color-primary: #f9f9f9;
-  --color-secondary: #1f1f1f;
-  --color-accent: #e90516;
-  --color-accent-hover: #f23344;
-  --color-muted: #686868;
-  --color-border: #3e3e3e;
-  --color-input-bg: #262626;
-  --color-bg: #141414;
-  --color-success: #30b94d;
-  --color-info: #4f92f7;
-}
+@source "../components/**/*.{js,ts,jsx,tsx}";
+@source "../app/**/*.{js,ts,jsx,tsx}";
 
 * {
   margin: 0;
@@ -38,29 +29,28 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-secondary);
+  background: #1f1f1f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: #3e3e3e;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted);
+  background: #686868;
 }
 
 /* Input autofill */
 input:-webkit-autofill {
-  -webkit-text-fill-color: var(--color-primary);
-  -webkit-box-shadow: 0 0 0px 1000px var(--color-input-bg) inset;
+  -webkit-text-fill-color: #f9f9f9;
+  -webkit-box-shadow: 0 0 0px 1000px #262626 inset;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Focus visible */
+/* Focus visible - disable default */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* Hide number input arrows */

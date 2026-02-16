@@ -17,18 +17,21 @@ export default function Header() {
   const { mutate: logout, isPending } = useLogout();
 
   return (
-    <header className="rounded-[15px] bg-[#1f1f1f] px-5 py-3 md:px-4 md:py-4">
+    <header
+      className="rounded-[15px] bg-[#1f1f1f]"
+      style={{ padding: '16px 20px' }}
+    >
       <div className="flex items-center justify-between">
-        {/* Logo - icon on mobile, full on tablet+ */}
+        {/* Logo */}
         <Logo showText className="hidden md:flex" />
         <Logo showText={false} className="md:hidden" />
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - centered */}
         <UserNav className="hidden lg:flex" />
 
         {/* Right Section */}
-        <div className="flex items-center gap-2 md:gap-4">
-          {/* User Avatar - with name on desktop only */}
+        <div className="flex items-center gap-4">
+          {/* User Avatar with name on desktop */}
           <UserBar showName className="hidden lg:flex" />
           <UserBar className="lg:hidden" />
 

@@ -61,20 +61,31 @@ export default function Modal({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={handleOverlayClick}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(20, 20, 20, 0.6)' }}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className={`relative max-h-[90vh] overflow-y-auto rounded-xl border border-[#3e3e3e] bg-[#1f1f1f] p-10 shadow-xl ${className}`}
+            className={`relative max-h-[90vh] overflow-y-auto shadow-xl ${className}`}
+            style={{
+              backgroundColor: '#1f1f1f',
+              borderRadius: '12px',
+              padding: '40px 50px',
+            }}
             onClick={e => e.stopPropagation()}
           >
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-1 text-[#f9f9f9] transition-colors hover:bg-[#f9f9f9]/10"
+                className="absolute transition-colors hover:opacity-70"
+                style={{
+                  right: '16px',
+                  top: '16px',
+                  color: '#f9f9f9',
+                }}
                 aria-label="Close modal"
               >
                 <X size={22} />

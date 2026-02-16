@@ -3,19 +3,18 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { useBookById } from '@/hooks/useBooks';
+import { useStartReading, useFinishReading } from '@/hooks/useReading';
 import { useModal } from '@/hooks/useModal';
 
 import Dashboard from '@/components/Dashboard/Dashboard';
 import AddReadingForm from '@/components/forms/AddReadingForm';
-import Diary from '@/components/reading/Diary';
-import Statistics from '@/components/reading/Statistics';
-import ProgressCircle from '@/components/reading/ProgressCircle';
+import ReadingDetails from '@/components/reading/ReadingDetails';
 import BookFinishedModal from '@/components/modals/BookFinishedModal';
 import Loader from '@/components/ui/Loader';
 import Button from '@/components/ui/Button';
-import Image from 'next/image';
 
 interface ReadingClientProps {
   bookId?: string;
@@ -26,6 +25,10 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
 
   // Book request
   const { data: book, isLoading, isError } = useBookById(bookId || '');
+
+  // Reading mutations
+  const { mutate: startReading, isPending: isStarting } = useStartReading();
+  const { mutate: finishReading, isPending: isFinishing } = useFinishReading();
 
   // If there is no bookId, display an empty state
   if (!bookId) {
@@ -84,10 +87,45 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   const activeProgress = book.progress?.find(p => p.status === 'active');
   const isReading = !!activeProgress;
 
+  // Has completed (inactive) progress entries
+  const completedProgress = book.progress?.filter(p => p.status === 'inactive') || [];
+  const hasCompletedProgress = completedProgress.length > 0;
+
   // Processing the completion of the book
   const handleBookFinished = () => {
     finishedModal.open();
   };
+
+  // Handle red button click
+  const handleRecordClick = () => {
+    if (isReading) {
+      // If reading, stop at current page (use last page from active progress)
+      const currentPage = activeProgress?.startPage || 0;
+      finishReading(
+        { id: book._id, page: currentPage },
+        {
+          onSuccess: () => {
+            if (currentPage >= book.totalPages) {
+              handleBookFinished();
+            }
+          },
+        }
+      );
+    } else {
+      // Start reading from page 0 or last read page
+      startReading({ id: book._id, page: pagesRead });
+    }
+  };
+
+  // Calculate average reading speed and time left
+  const avgSpeed = completedProgress.length > 0
+    ? completedProgress.reduce((sum, p) => sum + p.speed, 0) / completedProgress.length
+    : 0;
+  
+  const pagesLeft = book.totalPages - pagesRead;
+  const minutesLeft = avgSpeed > 0 ? (pagesLeft / avgSpeed) * 60 : 0;
+  const hoursLeft = Math.floor(minutesLeft / 60);
+  const minsLeft = Math.round(minutesLeft % 60);
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row">
@@ -96,57 +134,132 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
         {/* Reading Form */}
         <AddReadingForm book={book} onFinish={handleBookFinished} />
 
-        {/* Diary or Statistics */}
-        {book.progress && book.progress.length > 0 ? (
-          <>
-            {/* Toggle can be added if necessary */}
-            <Diary bookId={book._id} progress={book.progress} />
-            <div className="mt-5">
-              <Statistics progress={book.progress} />
-            </div>
-          </>
+        {/* Progress Section */}
+        {hasCompletedProgress ? (
+          <ReadingDetails
+            bookId={book._id}
+            progress={book.progress}
+            totalBookPages={book.totalPages}
+          />
         ) : (
-          <div className="rounded-xl bg-[#262626] p-5">
-            <h3 className="mb-2 text-lg font-bold text-[#f9f9f9]">Progress</h3>
-            <p className="text-sm text-[#686868]">
-              Here you will see your reading progress and statistics.
+          <div>
+            <h3
+              className="font-bold text-[#f9f9f9]"
+              style={{ fontSize: '18px', marginBottom: '8px' }}
+            >
+              Progress
+            </h3>
+            <p
+              className="text-[#686868]"
+              style={{ fontSize: '14px', marginBottom: '20px' }}
+            >
+              Here you will see when and how much you read. To record, click on
+              the red button above.
             </p>
+
+            {/* Star Icon */}
+            <div className="flex justify-center">
+              <Image
+                src="/star.svg"
+                alt="Star"
+                width={100}
+                height={100}
+              />
+            </div>
           </div>
         )}
       </Dashboard>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col items-center justify-center rounded-[30px] bg-[#1f1f1f] p-5 md:p-7">
-        <h2 className="mb-6 self-start text-xl font-bold text-[#f9f9f9] md:text-[28px]">
-          My reading
-        </h2>
+      <div className="flex flex-1 flex-col items-center rounded-[30px] bg-[#1f1f1f] p-5 md:p-7">
+        {/* Header with time left */}
+        <div
+          className="mb-10 flex w-full items-center justify-between"
+        >
+          <h2
+            className="font-bold text-[#f9f9f9]"
+            style={{ fontSize: '20px' }}
+          >
+            My reading
+          </h2>
+          {hasCompletedProgress && pagesLeft > 0 && (
+            <span
+              className="text-[#686868]"
+              style={{ fontSize: '12px' }}
+            >
+              {hoursLeft} hours and {minsLeft} minutes left
+            </span>
+          )}
+        </div>
 
-        <div className="relative mb-4 aspect-[137/208] w-[137px] overflow-hidden rounded-lg bg-[#262626] md:w-[169px] lg:w-[224px]">
+        {/* Book Cover */}
+        <div
+          className="relative mb-4 overflow-hidden rounded-lg bg-[#262626]"
+          style={{
+            width: '169px',
+            height: '256px',
+          }}
+        >
           <Image
             src={book.imageUrl}
             alt={book.title}
             fill
-            sizes="(max-width: 768px) 137px, (max-width: 1439px) 169px, 224px"
+            sizes="169px"
             className="object-cover"
           />
         </div>
 
         {/* Book Info */}
-        <h3 className="mb-1 text-center text-lg font-bold text-[#f9f9f9]">
+        <h3
+          className="mb-1 text-center font-bold text-[#f9f9f9]"
+          style={{ fontSize: '18px' }}
+        >
           {book.title}
         </h3>
-        <p className="mb-6 text-center text-sm text-[#686868]">{book.author}</p>
+        <p
+          className="mb-6 text-center text-[#686868]"
+          style={{ fontSize: '12px' }}
+        >
+          {book.author}
+        </p>
 
-        {/* Progress Circle */}
-        <ProgressCircle
-          percentage={progressPercent}
-          pagesRead={pagesRead}
-          totalPages={book.totalPages}
-        />
-
-        {/* Reading Status */}
-        {isReading && (
-          <p className="mt-4 text-sm text-[#4f92f7]">📖 Currently reading...</p>
+        {/* Progress Circle or Red Button */}
+        {isReading ? (
+          // Active reading - show STOP button
+          <button
+            onClick={handleRecordClick}
+            disabled={isStarting || isFinishing}
+            className="flex items-center justify-center rounded-full border-2 border-[#e90516] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+            style={{
+              width: '50px',
+              height: '50px',
+              backgroundColor: 'transparent',
+            }}
+            aria-label="Stop reading"
+          >
+            {/* Stop icon (square) */}
+            <div
+              style={{
+                width: '16px',
+                height: '16px',
+                backgroundColor: '#e90516',
+                borderRadius: '2px',
+              }}
+            />
+          </button>
+        ) : (
+          // Not reading - show START button (solid red circle)
+          <button
+            onClick={handleRecordClick}
+            disabled={isStarting || isFinishing}
+            className="flex items-center justify-center rounded-full transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+            style={{
+              width: '50px',
+              height: '50px',
+              backgroundColor: '#e90516',
+            }}
+            aria-label="Start reading"
+          />
         )}
       </div>
 

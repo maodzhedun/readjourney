@@ -2,6 +2,7 @@
 
 'use client';
 
+import Image from 'next/image';
 import { ReadingProgress } from '@/types';
 import { useDeleteReading } from '@/hooks/useReading';
 import DiaryEntry from './DiaryEntry';
@@ -31,8 +32,13 @@ export default function Diary({ bookId, progress }: DiaryProps) {
 
   if (completedSessions.length === 0) {
     return (
-      <div className="rounded-xl bg-[#262626] p-5">
-        <h3 className="mb-2 text-lg font-bold text-[#f9f9f9]">Diary</h3>
+      <div>
+        <h3
+          className="font-bold text-[#f9f9f9]"
+          style={{ fontSize: '18px', marginBottom: '8px' }}
+        >
+          Diary
+        </h3>
         <p className="text-sm text-[#686868]">
           No reading sessions yet. Start reading to see your progress here!
         </p>
@@ -40,20 +46,71 @@ export default function Diary({ bookId, progress }: DiaryProps) {
     );
   }
 
-  return (
-    <div className="rounded-xl bg-[#262626] p-5">
-      <h3 className="mb-4 text-lg font-bold text-[#f9f9f9]">Diary</h3>
+  // Group entries by date
+  const groupedByDate = completedSessions.reduce((acc, entry) => {
+    const date = new Date(entry.finishReading).toLocaleDateString('uk-UA', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(entry);
+    return acc;
+  }, {} as Record<string, ReadingProgress[]>);
 
-      <ul className="max-h-[300px] space-y-3 overflow-y-auto pr-2">
-        {completedSessions.map(entry => (
-          <DiaryEntry
-            key={entry._id}
-            entry={entry}
-            onDelete={() => handleDelete(entry._id)}
-            isDeleting={isPending}
+  return (
+    <div>
+      {/* Header */}
+      <div
+        className="flex items-center justify-between"
+        style={{ marginBottom: '14px' }}
+      >
+        <h3
+          className="font-bold text-[#f9f9f9]"
+          style={{ fontSize: '18px' }}
+        >
+          Diary
+        </h3>
+        <div className="flex gap-2">
+          {/* Hourglass icon */}
+          <Image
+            src="/hourglass.svg"
+            alt="Time"
+            width={20}
+            height={20}
           />
+          {/* Pie chart icon */}
+          <Image
+            src="/pie-chart.svg"
+            alt="Statistics"
+            width={20}
+            height={20}
+          />
+        </div>
+      </div>
+
+      {/* Entries grouped by date */}
+      <div
+        className="space-y-4 overflow-y-auto pr-1"
+        style={{ maxHeight: '350px' }}
+      >
+        {Object.entries(groupedByDate).map(([date, entries]) => (
+          <div key={date}>
+            {entries.map((entry) => (
+              <DiaryEntry
+                key={entry._id}
+                entry={entry}
+                date={date}
+                totalPages={entries.reduce((sum, e) => sum + (e.finishPage - e.startPage), 0)}
+                onDelete={() => handleDelete(entry._id)}
+                isDeleting={isPending}
+              />
+            ))}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

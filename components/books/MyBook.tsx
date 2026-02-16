@@ -16,22 +16,11 @@ export default function MyBook({
   book,
   onRemove,
   onStartReading,
-  isRemoving, isPriority
+  isRemoving,
+  isPriority,
 }: MyBookProps) {
-  // Define the status colour
-  const getStatusColor = () => {
-    switch (book.status) {
-      case 'done':
-        return 'bg-[#30b94d]';
-      case 'in-progress':
-        return 'bg-[#4f92f7]';
-      default:
-        return 'bg-[#686868]';
-    }
-  };
-
   return (
-    <div className="group relative">
+    <div className="transition-all duration-200 hover:scale-[1.02]">
       {/* Book Cover */}
       <div
         className="relative mb-2 aspect-[137/208] cursor-pointer overflow-hidden rounded-lg bg-[#262626]"
@@ -42,7 +31,7 @@ export default function MyBook({
           alt={book.title}
           fill
           sizes="(max-width: 767px) 137px, (max-width: 1439px) 153px, 180px"
-          className="object-cover transition-transform group-hover:scale-105"
+          className="object-cover"
           priority={isPriority}
         />
       </div>
@@ -51,12 +40,10 @@ export default function MyBook({
       <h3 className="truncate text-sm font-bold text-[#f9f9f9]">
         {book.title}
       </h3>
-      <p className="truncate text-xs text-[#686868]">{book.author}</p>
-
-      {/* Status & Delete Row */}
-      <div className="mt-2 flex items-center justify-between">
-        {/* Status Indicator */}
-        <span className={`h-2.5 w-2.5 rounded-full ${getStatusColor()}`} />
+      
+      {/* Author & Delete Row */}
+      <div className="flex items-end justify-between">
+        <p className="truncate text-xs text-[#686868]">{book.author}</p>
 
         {/* Delete Button */}
         <button
@@ -65,7 +52,7 @@ export default function MyBook({
             onRemove();
           }}
           disabled={isRemoving}
-          className="flex h-7 w-7 items-center justify-center rounded-full border border-[#e90516]/30 text-[#e90516] transition-colors hover:bg-[#e90516]/10 disabled:opacity-50"
+          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-[#686868] text-[#686868] transition-all duration-200 hover:border-[#e85050] hover:bg-[rgba(232,80,80,0.1)] hover:text-[#e85050] disabled:opacity-50"
           aria-label="Delete book"
         >
           <Trash2 size={14} />

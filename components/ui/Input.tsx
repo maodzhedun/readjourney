@@ -1,6 +1,5 @@
 import { forwardRef, InputHTMLAttributes, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import clsx from 'clsx';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -9,7 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, showPasswordToggle, type, className, ...props }, ref) => {
+  ({ label, error, showPasswordToggle, type, style, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === 'password';
     const inputType = isPassword && showPassword ? 'text' : type;
@@ -17,41 +16,64 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         <div
-          className={clsx(
-            'flex items-center rounded-xl border bg-[#262626] px-3 py-3 transition-colors md:px-4 md:py-4',
-            error
-              ? 'border-[#e90516]'
-              : 'border-[#3e3e3e] focus-within:border-[#f9f9f9]/40'
-          )}
+          className="flex items-center transition-colors"
+          style={{
+            height: '50px',
+            borderRadius: '12px',
+            border: error ? '1px solid #e90516' : '1px solid transparent',
+            backgroundColor: '#262626',
+            padding: '10px',
+          }}
         >
           {/* Label inside input */}
           {label && (
-            <span className="mr-2 shrink-0 text-sm text-[#686868]">{label}</span>
+            <span
+              className="shrink-0"
+              style={{ 
+                color: '#686868',
+                fontSize: '14px',
+                marginRight: '8px',
+              }}
+            >
+              {label}
+            </span>
           )}
 
           <input
             ref={ref}
             type={inputType}
-            className={clsx(
-              'w-full bg-transparent text-sm text-[#f9f9f9] outline-none placeholder:text-[#686868]',
-              className
-            )}
+            className="w-full outline-none"
+            style={{
+              backgroundColor: 'transparent',
+              fontSize: '14px',
+              color: '#f9f9f9',
+              border: 'none',
+            }}
             {...props}
           />
 
-          {/* Password toggle */}
           {isPassword && showPasswordToggle && (
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="ml-2 shrink-0 text-[#686868] hover:text-[#f9f9f9]"
+              className="ml-2 shrink-0 transition-colors"
+              style={{
+                color: '#686868',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           )}
         </div>
 
-        {error && <p className="mt-1 text-xs text-[#e90516]">{error}</p>}
+        {error && (
+          <p className="mt-1 text-xs" style={{ color: '#e90516' }}>
+            {error}
+          </p>
+        )}
       </div>
     );
   }

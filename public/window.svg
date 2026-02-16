@@ -1,1 +1,25 @@
-<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue book (bottom, tilted right) -->
+  <g transform="rotate(-5, 20, 30)">
+    <rect x="8" y="26" width="24" height="6" rx="1" fill="#4F92F7"/>
+    <rect x="8" y="26" width="3" height="6" fill="#3B7DD8"/>
+    <rect x="29" y="26" width="3" height="6" fill="#E8E8E8"/>
+    <path d="M27 26V29L28.5 27.5L30 29V26H27Z" fill="#F4D03F"/>
+  </g>
+  
+  <!-- Red book (middle, tilted left) -->
+  <g transform="rotate(5, 20, 22)">
+    <rect x="6" y="18" width="26" height="6" rx="1" fill="#E74C3C"/>
+    <rect x="6" y="18" width="3" height="6" fill="#C0392B"/>
+    <rect x="29" y="18" width="3" height="6" fill="#E8E8E8"/>
+    <path d="M26 18V21L27.5 19.5L29 21V18H26Z" fill="#30B94D"/>
+  </g>
+  
+  <!-- Green book (top, tilted right) -->
+  <g transform="rotate(-8, 20, 14)">
+    <rect x="10" y="10" width="22" height="6" rx="1" fill="#30B94D"/>
+    <rect x="10" y="10" width="3" height="6" fill="#27AE60"/>
+    <rect x="29" y="10" width="3" height="6" fill="#E8E8E8"/>
+    <path d="M26 10V13L27.5 11.5L29 13V10H26Z" fill="#E74C3C"/>
+  </g>
+</svg>

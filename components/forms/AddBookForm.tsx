@@ -20,7 +20,7 @@ interface AddBookFormProps {
 }
 
 export default function AddBookForm({ onSuccess }: AddBookFormProps) {
-  const { mutate: addBook, isPending } = useAddBook();
+  const { mutateAsync: addBook, isPending } = useAddBook();
 
   const {
     register,
@@ -31,43 +31,49 @@ export default function AddBookForm({ onSuccess }: AddBookFormProps) {
     resolver: yupResolver(addBookSchema),
   });
 
-  const onSubmit = (data: AddBookFormData) => {
-    addBook(data, {
-      onSuccess: () => {
-        reset();
-        onSuccess?.();
-      },
-    });
+  const onSubmit = async (data: AddBookFormData) => {
+    try {
+      await addBook(data);
+      reset();
+      onSuccess?.();
+    } catch {
+      // Error is handled in useAddBook
+    }
   };
 
   return (
-    <div className="mb-5">
-      <h3 className="mb-2 text-sm text-[#f9f9f9]">Create your library:</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+    <div style={{ marginBottom: '20px' }}>
+      <h3
+        className="text-[#f9f9f9]"
+        style={{ fontSize: '14px', marginBottom: '8px' }}
+      >
+        Create your library:
+      </h3>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+      >
         <Input
           {...register('title')}
           label="Book title:"
-          placeholder="Enter book title"
+          placeholder="Enter text"
           error={errors.title?.message}
-          className="py-3"
         />
         <Input
           {...register('author')}
           label="The author:"
-          placeholder="Enter the author"
+          placeholder="Enter text"
           error={errors.author?.message}
-          className="py-3"
         />
         <Input
           {...register('totalPages')}
           label="Number of pages:"
           type="number"
-          placeholder="Enter number of pages"
+          placeholder="0"
           error={errors.totalPages?.message}
-          className="py-3"
         />
 
-        <div className="pt-2">
+        <div style={{ marginTop: '12px' }}>
           <Button type="submit" isLoading={isPending} size="sm">
             Add book
           </Button>

@@ -3,14 +3,23 @@ import { ArrowRight } from 'lucide-react';
 
 export default function RecommendedInfo() {
   return (
-    <div className="rounded-xl bg-[#262626] p-5">
-      <h3 className="mb-5 text-lg font-bold text-[#f9f9f9]">
+    <div
+      className="rounded-[12px] bg-[#262626]"
+      style={{ padding: '20px' }}
+    >
+      <h3
+        className="font-bold text-[#f9f9f9]"
+        style={{ fontSize: '18px', marginBottom: '20px' }}
+      >
         Start your workout
       </h3>
 
-      <div className="space-y-5">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div className="flex gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f9f9f9]">
+          <div
+            className="flex shrink-0 items-center justify-center rounded-full bg-[#f9f9f9]"
+            style={{ width: '40px', height: '40px' }}
+          >
             <span className="text-lg font-bold text-[#1f1f1f]">1</span>
           </div>
           <p className="text-sm text-[#686868]">
@@ -20,7 +29,10 @@ export default function RecommendedInfo() {
         </div>
 
         <div className="flex gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f9f9f9]">
+          <div
+            className="flex shrink-0 items-center justify-center rounded-full bg-[#f9f9f9]"
+            style={{ width: '40px', height: '40px' }}
+          >
             <span className="text-lg font-bold text-[#1f1f1f]">2</span>
           </div>
           <p className="text-sm text-[#686868]">
@@ -32,7 +44,10 @@ export default function RecommendedInfo() {
 
       <Link
         href="/library"
-        className="mt-5 flex items-center gap-1 text-sm text-[#686868] underline transition-colors hover:text-[#f9f9f9]"
+        className="flex items-center gap-1 text-sm no-underline transition-colors hover:underline"
+        style={{ color: '#686868', marginTop: '20px' }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = '#f9f9f9')}
+        onMouseLeave={(e) => (e.currentTarget.style.color = '#686868')}
       >
         My library
         <ArrowRight size={20} />

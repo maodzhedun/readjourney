@@ -1,0 +1,18 @@
+<svg width="68" height="70" viewBox="0 0 68 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bottom book (red) -->
+  <rect x="8" y="50" width="52" height="12" rx="2" fill="#E74C3C"/>
+  <rect x="8" y="50" width="52" height="3" rx="1" fill="#C0392B"/>
+  
+  <!-- Middle book (blue) -->
+  <rect x="12" y="36" width="44" height="12" rx="2" fill="#3498DB"/>
+  <rect x="12" y="36" width="44" height="3" rx="1" fill="#2980B9"/>
+  
+  <!-- Top book (green) - slightly tilted -->
+  <g transform="rotate(-8 34 28)">
+    <rect x="10" y="18" width="48" height="14" rx="2" fill="#2ECC71"/>
+    <rect x="10" y="18" width="48" height="3" rx="1" fill="#27AE60"/>
+  </g>
+  
+  <!-- Bookmark (yellow) -->
+  <path d="M44 8 L44 26 L48 22 L52 26 L52 8 Z" fill="#F1C40F"/>
+</svg>

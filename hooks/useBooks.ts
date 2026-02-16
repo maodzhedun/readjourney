@@ -84,7 +84,7 @@ export function useAddBook() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
-      toast.success('Book added to library!');
+      // Modal is shown instead of toast
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
@@ -103,7 +103,7 @@ export function useAddBookById() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: booksKeys.library() });
-      toast.success('Book added to library!');
+      // Modal is shown instead of toast
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
@@ -120,8 +120,23 @@ export function useRemoveBook() {
       await booksApi.removeBook(id);
       return id;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: booksKeys.library() });
+    onSuccess: (deletedId: string) => {
+      // Get all library query caches and update them
+      const queryCache = queryClient.getQueryCache();
+      const libraryQueries = queryCache.findAll({
+        predicate: (query) => {
+          const key = query.queryKey;
+          return Array.isArray(key) && key[0] === 'books' && key[1] === 'library';
+        },
+      });
+
+      // Update each library query cache
+      libraryQueries.forEach((query) => {
+        queryClient.setQueryData<Book[]>(query.queryKey, (old) =>
+          old ? old.filter((book) => book._id !== deletedId) : []
+        );
+      });
+
       toast.success('Book removed from library');
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {

@@ -32,13 +32,20 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="flex h-full flex-col">
-      <h1 className="mb-5 text-[32px] font-bold leading-tight text-[#f9f9f9] md:mb-10 md:text-[64px]">
+    <>
+      <h1
+        className="text-[32px] font-bold leading-tight tracking-[0.02em] md:text-[64px]"
+        style={{ color: '#f9f9f9', marginTop: '40px', marginBottom: '40px' }}
+      >
         Expand your mind, reading{' '}
-        <span className="rounded-lg bg-[#f9f9f9]/5 px-2">a book</span>
+        <span style={{ color: '#686868' }}>a book</span>
       </h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mb-4 space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col"
+        style={{ gap: '14px' }}
+      >
         <Input
           {...registerField('name')}
           label="Name:"
@@ -58,23 +65,29 @@ export default function RegisterForm() {
           {...registerField('password')}
           type="password"
           label="Password:"
-          placeholder="Enterpassword"
+          placeholder="Yourpasswordhere"
           showPasswordToggle
           error={errors.password?.message}
         />
 
-        <div className="flex items-center gap-4 pt-2">
-          <Button type="submit" isLoading={isPending}>
+        <div
+          className="flex items-center"
+          style={{ gap: '14px', marginTop: '8px' }}
+        >
+          <Button type="submit" variant="primary" isLoading={isPending}>
             Registration
           </Button>
           <Link
             href="/login"
-            className="text-sm text-[#686868] underline underline-offset-2 hover:text-[#f9f9f9]"
+            className="text-sm no-underline transition-colors hover:underline hover:underline-offset-2"
+            style={{ color: '#686868' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#f9f9f9')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#686868')}
           >
             Already have an account?
           </Link>
         </div>
       </form>
-    </div>
+    </>
   );
 }

@@ -40,8 +40,11 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Return user data directly (not wrapped in { user: ... })
     return NextResponse.json({
-      user: { name: data.name, email: data.email },
+      _id: data._id,
+      name: data.name,
+      email: data.email,
     });
   } catch (error) {
     return NextResponse.json(

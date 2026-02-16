@@ -53,7 +53,14 @@ export default function Select({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between gap-2 rounded-xl border border-[#3e3e3e] bg-[#262626] px-4 py-3 text-left text-sm text-[#f9f9f9] transition-colors hover:border-[#f9f9f9]/40 focus:border-[#f9f9f9]/40 focus:outline-none"
+        className="flex w-full items-center justify-between gap-2 text-left text-[#f9f9f9] transition-colors"
+        style={{
+          backgroundColor: 'transparent',
+          border: '1px solid rgba(249, 249, 249, 0.2)',
+          borderRadius: '12px',
+          padding: '12px 14px',
+          fontSize: '14px',
+        }}
       >
         <span className={clsx(!selectedOption && 'text-[#686868]')}>
           {selectedOption?.label || placeholder}
@@ -65,16 +72,28 @@ export default function Select({
       </button>
 
       {isOpen && (
-        <ul className="absolute left-0 top-full z-10 mt-1 w-full overflow-hidden rounded-xl border border-[#3e3e3e] bg-[#262626] py-2 shadow-lg">
+        <ul
+          className="absolute right-0 top-full z-10 mt-1 overflow-hidden shadow-lg"
+          style={{
+            backgroundColor: '#262626',
+            borderRadius: '12px',
+            padding: '12px 14px',
+            minWidth: '120px',
+          }}
+        >
           {options.map(option => (
             <li key={option.value}>
               <button
                 type="button"
                 onClick={() => handleSelect(option.value)}
-                className={clsx(
-                  'w-full px-4 py-2 text-left text-sm transition-colors hover:bg-[#3e3e3e]',
-                  option.value === value ? 'text-[#f9f9f9]' : 'text-[#686868]'
-                )}
+                className="w-full text-left transition-colors hover:text-[#f9f9f9]"
+                style={{
+                  fontSize: '14px',
+                  color: option.value === value ? '#f9f9f9' : '#686868',
+                  padding: '4px 0',
+                  background: 'none',
+                  border: 'none',
+                }}
               >
                 {option.label}
               </button>

@@ -22,7 +22,9 @@ export function useRegister() {
       return data;
     },
     onSuccess: data => {
-      setUser(data);
+      // API returns { user: { name, email } } or { name, email }
+      const user = data.user || data;
+      setUser(user);
       toast.success('Registration successful!');
       router.push('/recommended');
     },
@@ -43,7 +45,9 @@ export function useLogin() {
       return data;
     },
     onSuccess: data => {
-      setUser(data);
+      // API returns { user: { name, email } }
+      const user = data.user || data;
+      setUser(user);
       toast.success('Welcome back!');
       router.push('/recommended');
     },

@@ -28,12 +28,19 @@ export default function BookCard({
       onKeyDown={onClick ? e => e.key === 'Enter' && onClick() : undefined}
     >
       {/* Book Cover */}
-      <div className="relative mb-2 aspect-[137/208] overflow-hidden rounded-lg bg-[#262626]">
+      <div
+        className="relative overflow-hidden rounded-[8px] bg-[#262626]"
+        style={{
+          width: '100%',
+          aspectRatio: '137 / 208',
+          marginBottom: '8px',
+        }}
+      >
         <Image
           src={book.imageUrl}
           alt={book.title}
           fill
-          sizes="(max-width: 767px) 137px, (max-width: 1439px) 153px, 180px"
+          sizes="(max-width: 767px) 137px, (max-width: 1279px) 137px, 137px"
           className="object-cover transition-transform group-hover:scale-105"
           priority={isPriority}
         />
@@ -54,10 +61,16 @@ export default function BookCard({
       </div>
 
       {/* Book Info */}
-      <h3 className="truncate text-sm font-bold text-[#f9f9f9]">
+      <h3
+        className="truncate font-bold text-[#f9f9f9]"
+        style={{ fontSize: '14px', marginBottom: '2px' }}
+      >
         {book.title}
       </h3>
-      <p className="truncate text-[10px] text-[#686868] md:text-xs">
+      <p
+        className="truncate text-[#686868]"
+        style={{ fontSize: '10px' }}
+      >
         {book.author}
       </p>
 
@@ -65,13 +78,17 @@ export default function BookCard({
       {showStatus && book.status && (
         <div className="mt-2 flex items-center gap-1">
           <span
-            className={`h-2.5 w-2.5 rounded-full ${
-              book.status === 'done'
-                ? 'bg-[#30b94d]'
-                : book.status === 'in-progress'
-                  ? 'bg-[#4f92f7]'
-                  : 'bg-[#686868]'
-            }`}
+            className="rounded-full"
+            style={{
+              width: '10px',
+              height: '10px',
+              backgroundColor:
+                book.status === 'done'
+                  ? '#30b94d'
+                  : book.status === 'in-progress'
+                    ? '#4f92f7'
+                    : '#686868',
+            }}
           />
         </div>
       )}

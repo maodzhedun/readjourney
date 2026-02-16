@@ -78,7 +78,7 @@ export default function AddReadingForm({
           {...register('page')}
           label="Page number:"
           type="number"
-          placeholder="Enter page number"
+          placeholder="0"
           error={errors.page?.message}
           className="py-3"
         />

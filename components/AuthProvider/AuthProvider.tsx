@@ -15,10 +15,16 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const { data } = await authApi.getSession();
-        if (data.success) {
-          const { data: user } = await authApi.getCurrentUser();
-          if (user) setUser(user);
+        const { data: sessionData } = await authApi.getSession();
+        if (sessionData.success) {
+          const { data: userData } = await authApi.getCurrentUser();
+          // API may return { user: {...} } or {...} directly
+          const user = userData?.user || userData;
+          if (user && user.name) {
+            setUser(user);
+          } else {
+            clearAuth();
+          }
         } else {
           clearAuth();
         }

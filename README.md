@@ -14,13 +14,13 @@ Built with **Next.js**, **TypeScript**, **Zustand**, **TanStack Query**, and **A
 
 **Your Name**
 
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [linkedin.com/in/your-profile](https://www.linkedin.com/in/your-profile/)
-- Email: your.email@gmail.com
+- GitHub: [@your-username](https://github.com/maodzhedun)
+- LinkedIn: [Vladyslav Bilonoh](https://www.linkedin.com/in/vladyslavbilonoh/)
+- Email: vladyslav.bilonoh@gmail.com
 
 ## Live Demo
 
-- [Live site on Vercel](https://your-project.vercel.app)
+- [Live site on Vercel](https://readjourney-tawny.vercel.app/)
 
 ## Pages
 
