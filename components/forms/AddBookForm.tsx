@@ -42,27 +42,19 @@ export default function AddBookForm({ onSuccess }: AddBookFormProps) {
   };
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <h3
-        className="text-[#f9f9f9]"
-        style={{ fontSize: '14px', marginBottom: '8px' }}
-      >
-        Create your library:
-      </h3>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
-      >
+    <div>
+      <h3 className="mb-2 text-sm text-[#f9f9f9]">Create your library:</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <Input
           {...register('title')}
           label="Book title:"
-          placeholder="Enter text"
+          placeholder="Enter book title"
           error={errors.title?.message}
         />
         <Input
           {...register('author')}
           label="The author:"
-          placeholder="Enter text"
+          placeholder="Enter the author"
           error={errors.author?.message}
         />
         <Input
@@ -73,7 +65,7 @@ export default function AddBookForm({ onSuccess }: AddBookFormProps) {
           error={errors.totalPages?.message}
         />
 
-        <div style={{ marginTop: '12px' }}>
+        <div className="mt-3">
           <Button type="submit" isLoading={isPending} size="sm">
             Add book
           </Button>

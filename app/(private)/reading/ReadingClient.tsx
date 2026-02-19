@@ -33,12 +33,15 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   // If there is no bookId, display an empty state
   if (!bookId) {
     return (
-      <div className="flex flex-col gap-4 lg:flex-row">
+      <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
         <Dashboard>
           <p className="text-[#686868]">Select a book to start reading</p>
         </Dashboard>
 
-        <div className="flex flex-1 flex-col items-center justify-center rounded-[30px] bg-[#1f1f1f] p-5 md:p-7">
+        <div
+          className="flex flex-1 flex-col items-center justify-center rounded-[30px] bg-[#1f1f1f]"
+          style={{ padding: '40px' }}
+        >
           <p className="mb-4 text-6xl">📖</p>
           <p className="mb-4 text-center text-[#686868]">
             Choose a book from your library to start reading
@@ -88,7 +91,8 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   const isReading = !!activeProgress;
 
   // Has completed (inactive) progress entries
-  const completedProgress = book.progress?.filter(p => p.status === 'inactive') || [];
+  const completedProgress =
+    book.progress?.filter(p => p.status === 'inactive') || [];
   const hasCompletedProgress = completedProgress.length > 0;
 
   // Processing the completion of the book
@@ -118,19 +122,21 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   };
 
   // Calculate average reading speed and time left
-  const avgSpeed = completedProgress.length > 0
-    ? completedProgress.reduce((sum, p) => sum + p.speed, 0) / completedProgress.length
-    : 0;
-  
+  const avgSpeed =
+    completedProgress.length > 0
+      ? completedProgress.reduce((sum, p) => sum + p.speed, 0) /
+        completedProgress.length
+      : 0;
+
   const pagesLeft = book.totalPages - pagesRead;
   const minutesLeft = avgSpeed > 0 ? (pagesLeft / avgSpeed) * 60 : 0;
   const hoursLeft = Math.floor(minutesLeft / 60);
   const minsLeft = Math.round(minutesLeft % 60);
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row">
+    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
       {/* Dashboard */}
-      <Dashboard>
+      <Dashboard className="space-y-5">
         {/* Reading Form */}
         <AddReadingForm book={book} onFinish={handleBookFinished} />
 
@@ -159,34 +165,24 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
 
             {/* Star Icon */}
             <div className="flex justify-center">
-              <Image
-                src="/star.svg"
-                alt="Star"
-                width={100}
-                height={100}
-              />
+              <Image src="/star.svg" alt="Star" width={100} height={100} />
             </div>
           </div>
         )}
       </Dashboard>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col items-center rounded-[30px] bg-[#1f1f1f] p-5 md:p-7">
+      <div
+        className="flex flex-1 flex-col items-center rounded-[30px] bg-[#1f1f1f]"
+        style={{ padding: '40px' }}
+      >
         {/* Header with time left */}
-        <div
-          className="mb-10 flex w-full items-center justify-between"
-        >
-          <h2
-            className="font-bold text-[#f9f9f9]"
-            style={{ fontSize: '20px' }}
-          >
+        <div className="mb-10 flex w-full items-center justify-between">
+          <h2 className="font-bold text-[#f9f9f9]" style={{ fontSize: '28px' }}>
             My reading
           </h2>
           {hasCompletedProgress && pagesLeft > 0 && (
-            <span
-              className="text-[#686868]"
-              style={{ fontSize: '12px' }}
-            >
+            <span className="text-[#686868]" style={{ fontSize: '14px' }}>
               {hoursLeft} hours and {minsLeft} minutes left
             </span>
           )}

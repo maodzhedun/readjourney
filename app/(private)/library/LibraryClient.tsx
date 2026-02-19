@@ -15,7 +15,6 @@ import AddBookForm from '@/components/forms/AddBookForm';
 import RecommendedPreview from '@/components/Dashboard/RecommendedPreview';
 import MyLibraryBooks from '@/components/books/MyLibraryBooks';
 import AddBookSuccessModal from '@/components/modals/AddBookSuccessModal';
-import StartReadingModal from '@/components/modals/StartReadingModal';
 import Select from '@/components/ui/Select';
 import Loader from '@/components/ui/Loader';
 
@@ -26,10 +25,6 @@ export default function LibraryClient() {
   // Success modal state
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  // Start reading modal state
-  const [isReadingModalOpen, setIsReadingModalOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-
   // Library request
   const { data: books, isLoading, isFetching } = useOwnBooks(filter);
 
@@ -38,32 +33,14 @@ export default function LibraryClient() {
 
   // Handling successful book addition - show modal
   const handleAddSuccess = useCallback(() => {
+    console.log('handleAddSuccess called');
     setIsSuccessModalOpen(true);
   }, []);
 
-  // Close success modal
-  const handleCloseSuccessModal = useCallback(() => {
+  // Close modal
+  const handleCloseModal = useCallback(() => {
     setIsSuccessModalOpen(false);
   }, []);
-
-  // Open reading modal
-  const handleBookClick = useCallback((book: Book) => {
-    setSelectedBook(book);
-    setIsReadingModalOpen(true);
-  }, []);
-
-  // Close reading modal
-  const handleCloseReadingModal = useCallback(() => {
-    setIsReadingModalOpen(false);
-    setSelectedBook(null);
-  }, []);
-
-  // Navigate to reading page
-  const handleStartReading = useCallback(() => {
-    if (selectedBook) {
-      router.push(`/reading?bookId=${selectedBook._id}`);
-    }
-  }, [router, selectedBook]);
 
   // Deletion processing
   const handleRemove = (id: string) => {
@@ -72,10 +49,15 @@ export default function LibraryClient() {
     }
   };
 
+  // Switch to reading
+  const handleStartReading = (book: Book) => {
+    router.push(`/reading?bookId=${book._id}`);
+  };
+
   return (
-    <div className="flex flex-col gap-4 lg:flex-row">
+    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
       {/* Dashboard */}
-      <Dashboard>
+      <Dashboard className="space-y-5">
         {/* Add Book Form */}
         <AddBookForm onSuccess={handleAddSuccess} />
 
@@ -86,17 +68,14 @@ export default function LibraryClient() {
       {/* Main Content */}
       <div
         className="flex flex-1 flex-col rounded-[30px] bg-[#1f1f1f]"
-        style={{ padding: '20px 20px 28px' }}
+        style={{ padding: '40px 40px 28px' }}
       >
         {/* Header with Filter */}
         <div
           className="flex items-center justify-between"
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '28px' }}
         >
-          <h2
-            className="font-bold text-[#f9f9f9]"
-            style={{ fontSize: '20px' }}
-          >
+          <h2 className="font-bold text-[#f9f9f9]" style={{ fontSize: '28px' }}>
             My library
           </h2>
 
@@ -120,7 +99,7 @@ export default function LibraryClient() {
           <MyLibraryBooks
             books={books}
             onRemove={handleRemove}
-            onStartReading={handleBookClick}
+            onStartReading={handleStartReading}
             isRemoving={isRemoving}
           />
         )}
@@ -138,12 +117,7 @@ export default function LibraryClient() {
                 marginBottom: '20px',
               }}
             >
-              <Image
-                src="/window.svg"
-                alt="Books"
-                width={50}
-                height={50}
-              />
+              <Image src="/window.svg" alt="Books" width={50} height={50} />
             </div>
 
             {/* Empty State Text */}
@@ -167,18 +141,10 @@ export default function LibraryClient() {
         )}
       </div>
 
-      {/* Success Modal */}
+      {/* Success Modal - always rendered, controlled by isOpen */}
       <AddBookSuccessModal
         isOpen={isSuccessModalOpen}
-        onClose={handleCloseSuccessModal}
-      />
-
-      {/* Start Reading Modal */}
-      <StartReadingModal
-        book={selectedBook}
-        isOpen={isReadingModalOpen}
-        onClose={handleCloseReadingModal}
-        onStartReading={handleStartReading}
+        onClose={handleCloseModal}
       />
     </div>
   );

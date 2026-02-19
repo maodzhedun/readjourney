@@ -82,9 +82,29 @@ export function useAddBook() {
       const { data } = await booksApi.addBook(book);
       return data as Book;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: booksKeys.library() });
-      // Modal is shown instead of toast
+    onSuccess: (newBook: Book) => {
+      // Update all library query caches
+      const queryCache = queryClient.getQueryCache();
+      const libraryQueries = queryCache.findAll({
+        predicate: query => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) && key[0] === 'books' && key[1] === 'library'
+          );
+        },
+      });
+
+      if (libraryQueries.length > 0) {
+        // Add the new book to each library cache
+        libraryQueries.forEach(query => {
+          queryClient.setQueryData<Book[]>(query.queryKey, old =>
+            old ? [newBook, ...old] : [newBook]
+          );
+        });
+      } else {
+        // If no cache exists, invalidate to trigger refetch
+        queryClient.invalidateQueries({ queryKey: ['books', 'library'] });
+      }
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
@@ -101,9 +121,29 @@ export function useAddBookById() {
       const { data } = await booksApi.addBookById(id);
       return data as Book;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: booksKeys.library() });
-      // Modal is shown instead of toast
+    onSuccess: (newBook: Book) => {
+      // Update all library query caches
+      const queryCache = queryClient.getQueryCache();
+      const libraryQueries = queryCache.findAll({
+        predicate: query => {
+          const key = query.queryKey;
+          return (
+            Array.isArray(key) && key[0] === 'books' && key[1] === 'library'
+          );
+        },
+      });
+
+      if (libraryQueries.length > 0) {
+        // Add the new book to each library cache
+        libraryQueries.forEach(query => {
+          queryClient.setQueryData<Book[]>(query.queryKey, old =>
+            old ? [newBook, ...old] : [newBook]
+          );
+        });
+      } else {
+        // If no cache exists, invalidate to trigger refetch
+        queryClient.invalidateQueries({ queryKey: ['books', 'library'] });
+      }
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {
       toast.error(error.response?.data?.error || 'Failed to add book');
@@ -124,16 +164,18 @@ export function useRemoveBook() {
       // Get all library query caches and update them
       const queryCache = queryClient.getQueryCache();
       const libraryQueries = queryCache.findAll({
-        predicate: (query) => {
+        predicate: query => {
           const key = query.queryKey;
-          return Array.isArray(key) && key[0] === 'books' && key[1] === 'library';
+          return (
+            Array.isArray(key) && key[0] === 'books' && key[1] === 'library'
+          );
         },
       });
 
       // Update each library query cache
-      libraryQueries.forEach((query) => {
-        queryClient.setQueryData<Book[]>(query.queryKey, (old) =>
-          old ? old.filter((book) => book._id !== deletedId) : []
+      libraryQueries.forEach(query => {
+        queryClient.setQueryData<Book[]>(query.queryKey, old =>
+          old ? old.filter(book => book._id !== deletedId) : []
         );
       });
 

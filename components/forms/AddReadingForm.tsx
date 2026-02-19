@@ -69,7 +69,7 @@ export default function AddReadingForm({
   };
 
   return (
-    <div className="mb-5">
+    <div>
       <h3 className="mb-2 text-sm text-[#f9f9f9]">
         {isReading ? 'Stop page:' : 'Start page:'}
       </h3>

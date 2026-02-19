@@ -7,8 +7,8 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-[#141414] p-5 md:p-8">
-      <div className="mx-auto flex min-h-[calc(100vh-40px)] max-w-[1280px] flex-col gap-4 md:min-h-[calc(100vh-64px)] lg:flex-row">
+    <main className="min-h-screen bg-[#141414]" style={{ padding: '32px' }}>
+      <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-[1280px] flex-col gap-4 lg:flex-row">
         {/* Form Section - 600px on desktop */}
         <div
           className="flex w-full flex-col rounded-[30px] bg-[#1f1f1f] lg:w-[600px] lg:shrink-0"
@@ -32,15 +32,18 @@ export default function AuthLayout({
         </div>
 
         {/* Image Section - fills remaining space */}
-        <div className="hidden flex-1 items-center justify-center rounded-[30px] bg-[#1f1f1f] lg:flex">
-          <Image
-            src="/images/iPhone 15 Black.png"
-            alt="Read Journey App"
-            width={366}
-            height={799}
-            className="h-auto w-auto object-contain"
-            priority
-          />
+        <div className="relative hidden flex-1 items-center justify-center overflow-hidden rounded-[30px] bg-[#1f1f1f] lg:flex">
+          {/* Fixing size phone */}
+          <div className="relative h-[548px] w-[365px]">
+            <Image
+              src="/images/iPhone 15 Black.png"
+              alt="Read Journey App"
+              fill
+              className="object-contain"
+              sizes="(min-width: 1024px) 365px, 0px"
+              priority
+            />
+          </div>
         </div>
       </div>
     </main>

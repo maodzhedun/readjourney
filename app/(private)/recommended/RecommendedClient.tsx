@@ -52,11 +52,11 @@ export default function RecommendedClient() {
   };
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row">
+    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
       {/* Dashboard */}
-      <Dashboard>
+      <Dashboard className="space-y-5">
         {/* Filters */}
-        <div style={{ marginBottom: '20px' }}>
+        <div>
           <h3
             className="text-[#f9f9f9]"
             style={{ fontSize: '14px', marginBottom: '8px' }}
@@ -88,7 +88,7 @@ export default function RecommendedClient() {
         <RecommendedInfo />
 
         {/* Quote - hidden on mobile */}
-        <div className="hidden md:block" style={{ marginTop: '20px' }}>
+        <div className="hidden md:block">
           <Quote />
         </div>
       </Dashboard>
@@ -96,17 +96,14 @@ export default function RecommendedClient() {
       {/* Main Content */}
       <div
         className="flex flex-1 flex-col rounded-[30px] bg-[#1f1f1f]"
-        style={{ padding: '20px 20px 28px' }}
+        style={{ padding: '40px 40px 28px' }}
       >
         {/* Header with Pagination */}
         <div
           className="flex items-center justify-between"
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '28px' }}
         >
-          <h2
-            className="font-bold text-[#f9f9f9]"
-            style={{ fontSize: '20px' }}
-          >
+          <h2 className="font-bold text-[#f9f9f9]" style={{ fontSize: '28px' }}>
             Recommended
           </h2>
 
