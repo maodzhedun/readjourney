@@ -2,7 +2,6 @@
 
 import { useEffect, useCallback, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ModalProps {
@@ -11,6 +10,8 @@ interface ModalProps {
   children: ReactNode;
   className?: string;
   showCloseButton?: boolean;
+  borderRadius?: number;
+  background?: string;
 }
 
 export default function Modal({
@@ -19,6 +20,8 @@ export default function Modal({
   children,
   className = '',
   showCloseButton = true,
+  borderRadius = 12,
+  background = '#1f1f1f',
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -71,8 +74,8 @@ export default function Modal({
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className={`relative max-h-[90vh] overflow-y-auto shadow-xl ${className}`}
             style={{
-              backgroundColor: '#1f1f1f',
-              borderRadius: '12px',
+              backgroundColor: background,
+              borderRadius: `${borderRadius}px`,
               padding: '40px 50px',
             }}
             onClick={e => e.stopPropagation()}
@@ -80,15 +83,22 @@ export default function Modal({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="absolute transition-colors hover:opacity-70"
+                className="absolute transition-opacity hover:opacity-70"
                 style={{
                   right: '16px',
                   top: '16px',
-                  color: '#f9f9f9',
                 }}
                 aria-label="Close modal"
               >
-                <X size={22} />
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 32 32"
+                  className="stroke-[#f9f9f9]"
+                  fill="none"
+                >
+                  <use href="/sprite.svg#icon-close" />
+                </svg>
               </button>
             )}
             {children}

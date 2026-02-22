@@ -33,17 +33,20 @@ export default function AuthLayout({
 
         {/* Image Section - fills remaining space */}
         <div className="relative hidden flex-1 items-center justify-center overflow-hidden rounded-[30px] bg-[#1f1f1f] lg:flex">
-          {/* Fixing size phone */}
-          <div className="relative h-[548px] w-[365px]">
-            <Image
-              src="/images/iPhone 15 Black.png"
-              alt="Read Journey App"
-              fill
-              className="object-contain"
-              sizes="(min-width: 1024px) 365px, 0px"
-              priority
+          {/* iPhone image with responsive srcSet */}
+          <picture>
+            <source
+              srcSet="/images/iphone@1x.webp 1x, /images/iphone@2x.webp 2x"
+              type="image/webp"
             />
-          </div>
+            <img
+              src="/images/iphone@1x.webp"
+              alt="Read Journey App"
+              width={365}
+              height={548}
+              className="h-auto max-h-[90%] w-auto object-contain"
+            />
+          </picture>
         </div>
       </div>
     </main>

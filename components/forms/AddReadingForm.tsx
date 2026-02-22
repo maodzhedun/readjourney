@@ -69,32 +69,35 @@ export default function AddReadingForm({
   };
 
   return (
-    <div>
-      <h3 className="mb-2 text-sm text-[#f9f9f9]">
+    <div style={{ marginBottom: '20px' }}>
+      <p
+        className="text-[#f9f9f9]"
+        style={{ fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}
+      >
         {isReading ? 'Stop page:' : 'Start page:'}
-      </h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-        <Input
-          {...register('page')}
-          label="Page number:"
-          type="number"
-          placeholder="0"
-          error={errors.page?.message}
-          className="py-3"
-        />
-
-        <div className="pt-2">
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            size="sm"
-            className={clsx(
-              isReading && 'bg-[#e90516] text-white hover:bg-[#f23344]'
-            )}
-          >
-            {isReading ? 'To stop' : 'To start'}
-          </Button>
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div style={{ marginBottom: '20px' }}>
+          <Input
+            {...register('page')}
+            label="Page number:"
+            type="number"
+            placeholder="0"
+            error={errors.page?.message}
+          />
         </div>
+
+        <Button
+          type="submit"
+          isLoading={isLoading}
+          size="sm"
+          style={{ minWidth: '114px' }}
+          className={clsx(
+            isReading && 'bg-[#e90516] text-white hover:bg-[#f23344]'
+          )}
+        >
+          {isReading ? 'To stop' : 'To start'}
+        </Button>
       </form>
     </div>
   );

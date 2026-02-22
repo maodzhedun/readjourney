@@ -2,7 +2,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import Modal from '@/components/ui/Modal';
 
 interface BookFinishedModalProps {
@@ -15,22 +14,29 @@ export default function BookFinishedModal({
   onClose,
 }: BookFinishedModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="max-w-[342px]">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="max-w-[342px]"
+      borderRadius={30}
+      background="#141414"
+    >
       <div className="flex flex-col items-center text-center">
-        {/* Book Stack Icon */}
-        <div className="mb-8">
-          <Image
-            src="/books-stack.svg"
-            alt="Books"
-            width={68}
-            height={70}
+        <div style={{ marginBottom: '32px' }}>
+          <img
+            src="/images/books@1x.webp"
+            srcSet="/images/books@1x.webp 1x, /images/books@2x.webp 2x"
+            alt="Book finished"
+            width={80}
+            height={80}
+            style={{ objectFit: 'contain' }}
           />
         </div>
 
         {/* Title */}
         <h3
-          className="mb-4 font-bold text-[#f9f9f9]"
-          style={{ fontSize: '20px' }}
+          className="font-bold text-[#f9f9f9]"
+          style={{ fontSize: '20px', marginBottom: '16px' }}
         >
           The book is read
         </h3>
@@ -38,10 +44,12 @@ export default function BookFinishedModal({
         {/* Description */}
         <p
           className="text-[#686868]"
-          style={{ fontSize: '14px', lineHeight: '1.5' }}
+          style={{ fontSize: '14px', lineHeight: '1.57' }}
         >
           It was an{' '}
-          <span className="text-[#f9f9f9]">exciting journey</span>
+          <span className="font-bold italic text-[#f9f9f9]">
+            exciting journey
+          </span>
           , where each page revealed new horizons, and the characters became
           inseparable friends.
         </p>

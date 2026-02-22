@@ -21,7 +21,10 @@ export default function MyLibraryBooks({
   }
 
   return (
-    <ul className="grid grid-cols-2 gap-x-5 gap-y-6 2xl:grid-cols-5 lg:grid-cols-5">
+    <ul
+      className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5"
+      style={{ gap: '27px 20px' }}
+    >
       {books.map((book, index) => (
         <li key={book._id}>
           <MyBook

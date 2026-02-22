@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 
 interface PaginationProps {
@@ -24,13 +23,23 @@ export default function Pagination({
         className={clsx(
           'flex items-center justify-center rounded-full border transition-colors',
           canGoPrev
-            ? 'border-[#f9f9f9]/20 text-[#f9f9f9] hover:border-[#f9f9f9]'
-            : 'cursor-not-allowed border-[#3e3e3e] text-[#3e3e3e]'
+            ? 'border-[#f9f9f9]/20 hover:border-[#f9f9f9]'
+            : 'cursor-not-allowed border-[#3e3e3e]'
         )}
-        style={{ width: '32px', height: '32px' }}
+        style={{ width: '40px', height: '40px' }}
         aria-label="Previous page"
       >
-        <ChevronLeft size={16} />
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 32 32"
+          className={clsx(
+            'fill-none',
+            canGoPrev ? 'stroke-[#f9f9f9]' : 'stroke-[#3e3e3e]'
+          )}
+        >
+          <use href="/sprite.svg#icon-chevron-left" />
+        </svg>
       </button>
 
       {/* Page Info */}
@@ -48,13 +57,23 @@ export default function Pagination({
         className={clsx(
           'flex items-center justify-center rounded-full border transition-colors',
           canGoNext
-            ? 'border-[#f9f9f9]/20 text-[#f9f9f9] hover:border-[#f9f9f9]'
-            : 'cursor-not-allowed border-[#3e3e3e] text-[#3e3e3e]'
+            ? 'border-[#f9f9f9]/20 hover:border-[#f9f9f9]'
+            : 'cursor-not-allowed border-[#3e3e3e]'
         )}
-        style={{ width: '32px', height: '32px' }}
+        style={{ width: '40px', height: '40px' }}
         aria-label="Next page"
       >
-        <ChevronRight size={16} />
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 32 32"
+          className={clsx(
+            'fill-none',
+            canGoNext ? 'stroke-[#f9f9f9]' : 'stroke-[#3e3e3e]'
+          )}
+        >
+          <use href="/sprite.svg#icon-chevron-right" />
+        </svg>
       </button>
     </div>
   );

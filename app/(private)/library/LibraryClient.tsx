@@ -3,7 +3,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { useOwnBooks, useRemoveBook } from '@/hooks/useBooks';
@@ -55,11 +54,13 @@ export default function LibraryClient() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
+    <div className="flex flex-col lg:flex-row" style={{ gap: '16px' }}>
       {/* Dashboard */}
-      <Dashboard className="space-y-5">
+      <Dashboard>
         {/* Add Book Form */}
-        <AddBookForm onSuccess={handleAddSuccess} />
+        <div style={{ marginBottom: '20px' }}>
+          <AddBookForm onSuccess={handleAddSuccess} />
+        </div>
 
         {/* Recommended Books Preview */}
         <RecommendedPreview />
@@ -83,7 +84,6 @@ export default function LibraryClient() {
             options={FILTER_OPTIONS}
             value={filter}
             onChange={setFilter}
-            className="w-[150px]"
           />
         </div>
 
@@ -106,8 +106,8 @@ export default function LibraryClient() {
 
         {/* Empty State */}
         {books && books.length === 0 && !isLoading && (
-          <div className="flex flex-1 flex-col items-center justify-center py-10">
-            {/* Book Icon in Circle */}
+          <div className="flex flex-1 flex-col items-center justify-center">
+            {/* Book Icon in Circle - 100px */}
             <div
               className="flex items-center justify-center rounded-full"
               style={{
@@ -117,13 +117,24 @@ export default function LibraryClient() {
                 marginBottom: '20px',
               }}
             >
-              <Image src="/window.svg" alt="Books" width={50} height={50} />
+              <picture>
+                <source
+                  srcSet="/images/books@1x.webp 1x, /images/books@2x.webp 2x"
+                  type="image/webp"
+                />
+                <img
+                  src="/images/books@1x.webp"
+                  alt="Books"
+                  width={50}
+                  height={50}
+                />
+              </picture>
             </div>
 
             {/* Empty State Text */}
             <p
               className="text-center text-[#f9f9f9]"
-              style={{ fontSize: '14px' }}
+              style={{ fontSize: '14px', lineHeight: '1.5' }}
             >
               {filter === 'all' ? (
                 <>

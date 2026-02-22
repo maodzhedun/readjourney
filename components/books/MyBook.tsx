@@ -1,7 +1,6 @@
 //components/books/MyBook.tsx
 
 import Image from 'next/image';
-import { Trash2 } from 'lucide-react';
 import { Book } from '@/types';
 
 interface MyBookProps {
@@ -20,42 +19,59 @@ export default function MyBook({
   isPriority,
 }: MyBookProps) {
   return (
-    <div className="transition-all duration-200 hover:scale-[1.02]">
+    <div style={{ width: '137px' }}>
       {/* Book Cover */}
       <div
-        className="relative mb-2 aspect-[137/208] cursor-pointer overflow-hidden rounded-lg bg-[#262626]"
+        className="relative cursor-pointer overflow-hidden rounded-lg bg-[#262626]"
+        style={{ width: '137px', height: '208px', marginBottom: '8px' }}
         onClick={onStartReading}
       >
         <Image
           src={book.imageUrl}
           alt={book.title}
           fill
-          sizes="(max-width: 767px) 137px, (max-width: 1439px) 153px, 180px"
-          className="object-cover"
+          sizes="137px"
+          className="object-cover transition-transform hover:scale-105"
           priority={isPriority}
         />
       </div>
 
-      {/* Book Info */}
-      <h3 className="truncate text-sm font-bold text-[#f9f9f9]">
+      {/* Book Title */}
+      <h3
+        className="truncate font-bold text-[#f9f9f9]"
+        style={{ fontSize: '14px', marginBottom: '2px' }}
+      >
         {book.title}
       </h3>
-      
-      {/* Author & Delete Row */}
-      <div className="flex items-end justify-between">
-        <p className="truncate text-xs text-[#686868]">{book.author}</p>
 
-        {/* Delete Button */}
+      {/* Author & Delete Row */}
+      <div className="flex items-center justify-between">
+        <p
+          className="truncate text-[#686868]"
+          style={{ fontSize: '10px', maxWidth: '100px' }}
+        >
+          {book.author}
+        </p>
+
+        {/* Delete Button - no border, just icon */}
         <button
           onClick={e => {
             e.stopPropagation();
             onRemove();
           }}
           disabled={isRemoving}
-          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-[#686868] text-[#686868] transition-all duration-200 hover:border-[#e85050] hover:bg-[rgba(232,80,80,0.1)] hover:text-[#e85050] disabled:opacity-50"
+          className="group flex-shrink-0 p-1 transition-opacity hover:opacity-70 disabled:opacity-50"
           aria-label="Delete book"
         >
-          <Trash2 size={14} />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 32 32"
+            className="stroke-[#e85050]"
+            fill="none"
+          >
+            <use href="/sprite.svg#icon-trash" />
+          </svg>
         </button>
       </div>
     </div>

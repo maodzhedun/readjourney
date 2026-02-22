@@ -1,134 +1,124 @@
 //components/reading/DiaryEntry.tsx
+'use client';
 
-import { Trash2 } from 'lucide-react';
 import { ReadingProgress } from '@/types';
+import { useDeleteReading } from '@/hooks/useReading';
 
 interface DiaryEntryProps {
   entry: ReadingProgress;
-  date: string;
-  totalPages: number;
+  totalBookPages: number;
   onDelete: () => void;
   isDeleting?: boolean;
 }
 
 export default function DiaryEntry({
   entry,
-  date,
-  totalPages,
+  totalBookPages,
   onDelete,
   isDeleting,
 }: DiaryEntryProps) {
-  // Calculate the number of pages read in this session
   const pagesRead = entry.finishPage - entry.startPage;
+  const diffMs =
+    new Date(entry.finishReading).getTime() -
+    new Date(entry.startReading).getTime();
+  const minutes = Math.max(0, Math.round(diffMs / 60000));
 
-  // Calculate reading time in minutes
-  const startTime = new Date(entry.startReading).getTime();
-  const endTime = new Date(entry.finishReading).getTime();
-  const readingTimeMinutes = Math.round((endTime - startTime) / (1000 * 60));
+  const pct =
+    totalBookPages > 0
+      ? ((pagesRead / totalBookPages) * 100).toFixed(2)
+      : '0.00';
+  const timeLabel = minutes < 1 ? '< 1 min' : `${minutes} minutes`;
 
-  // Calculate percentage (assuming this is percentage of speed or progress)
-  // Based on mockup, it seems to show reading efficiency or similar metric
-  const percentage = entry.speed ? (entry.speed / 60).toFixed(1) : '0';
-
-  // Format speed
-  const pagesPerHour = Math.round(entry.speed || 0);
-
-  // Progress bar width (based on some metric - let's use a portion of max speed)
-  const progressWidth = Math.min(100, (pagesPerHour / 100) * 100);
+  // Use server-provided speed when available; show '—' for 0-minute sessions
+  const speed = entry.speed ?? 0;
+  const speedLabel = speed > 0 ? String(Math.round(speed)) : '—';
 
   return (
-    <div style={{ marginBottom: '16px' }}>
-      {/* Date Row */}
-      <div
-        className="flex items-center justify-between"
-        style={{ marginBottom: '8px' }}
-      >
-        <div className="flex items-center gap-3">
-          {/* Square icon */}
-          <div
-            style={{
-              width: '20px',
-              height: '20px',
-              border: '2px solid #1f1f1f',
-              borderRadius: '4px',
-              backgroundColor: '#262626',
-            }}
-          />
-          {/* Date */}
-          <span
-            className="text-[#f9f9f9]"
-            style={{ fontSize: '14px' }}
-          >
-            {date}
-          </span>
-        </div>
-        {/* Pages count */}
+    <div
+      className="grid items-start gap-x-2"
+      style={{ gridTemplateColumns: '1fr 59px 14px' }}
+    >
+      {/* Col 1: percentage + time */}
+      <div className="flex flex-col gap-1">
         <span
-          className="text-[#686868]"
-          style={{ fontSize: '12px' }}
+          style={{
+            color: '#f9f9f9',
+            fontWeight: 700,
+            fontSize: 16,
+            lineHeight: '1.25',
+          }}
         >
-          {totalPages} pages
+          {pct}%
+        </span>
+        <span style={{ color: '#686868', fontSize: 10, lineHeight: '1.4' }}>
+          {timeLabel}
         </span>
       </div>
 
-      {/* Stats Row */}
-      <div
-        className="flex items-center gap-4"
-        style={{ marginLeft: '32px' }}
-      >
-        {/* Percentage and Time */}
-        <div>
-          <p
-            className="font-bold text-[#f9f9f9]"
-            style={{ fontSize: '16px', lineHeight: '1.2' }}
-          >
-            {percentage}%
-          </p>
-          <p
-            className="text-[#686868]"
-            style={{ fontSize: '10px' }}
-          >
-            {readingTimeMinutes} minutes
-          </p>
-        </div>
-
-        {/* Progress Bar and Speed */}
-        <div className="flex flex-1 items-center gap-3">
-          {/* Progress Bar */}
+      {/* Col 2: diagram (bar line + gradient fill) + speed text */}
+      <div className="flex flex-col items-start" style={{ gap: 4 }}>
+        <div
+          style={{ position: 'relative', width: 59, height: 24, flexShrink: 0 }}
+        >
           <div
-            className="h-1 flex-1 rounded-full bg-[#1f1f1f]"
-            style={{ maxWidth: '60px' }}
-          >
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${progressWidth}%`,
-                backgroundColor: '#30b94d',
-              }}
-            />
-          </div>
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: '#30b94d',
+              clipPath: 'polygon(0% 45%, 100% 0%, 100% 10%, 0% 55%)',
+            }}
+          />
 
-          {/* Speed */}
-          <span
-            className="text-[#686868]"
-            style={{ fontSize: '10px', whiteSpace: 'nowrap' }}
-          >
-            {pagesPerHour} pages
-            <br />
-            per hour
-          </span>
-
-          {/* Delete Button */}
-          <button
-            onClick={onDelete}
-            disabled={isDeleting}
-            className="text-[#686868] transition-colors hover:text-[#e90516] disabled:opacity-50"
-            aria-label="Delete entry"
-          >
-            <Trash2 size={14} />
-          </button>
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(180deg, rgba(48,185,77,0.35) 0%, rgba(48,185,77,0) 100%)',
+              clipPath: 'polygon(0% 55%, 100% 10%, 100% 100%, 0% 100%)',
+            }}
+          />
         </div>
+
+        <span
+          style={{
+            color: '#686868',
+            fontSize: 10,
+            lineHeight: '1.4',
+            width: 59,
+          }}
+        >
+          {speedLabel} pages
+          <br />
+          per hour
+        </span>
       </div>
+
+      {/* Col 3: trash */}
+      <button
+        onClick={onDelete}
+        disabled={isDeleting}
+        style={{
+          background: 'none',
+          border: 'none',
+          padding: 0,
+          cursor: isDeleting ? 'not-allowed' : 'pointer',
+          opacity: isDeleting ? 0.4 : 1,
+          lineHeight: 0,
+          marginTop: 2,
+        }}
+        aria-label="Delete entry"
+      >
+        <svg
+          width={14}
+          height={14}
+          viewBox="0 0 32 32"
+          fill="none"
+          stroke="#686868"
+        >
+          <use href="/sprite.svg#icon-trash" />
+        </svg>
+      </button>
     </div>
   );
 }

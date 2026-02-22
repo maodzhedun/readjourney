@@ -3,7 +3,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu } from 'lucide-react';
 
 import { useLogout } from '@/hooks/useAuth';
 import Logo from './Logo';
@@ -49,10 +48,18 @@ export default function Header() {
           {/* Mobile Burger Button */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="flex h-10 w-10 items-center justify-center text-white transition-colors hover:text-white/70 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center transition-opacity hover:opacity-70 lg:hidden"
             aria-label="Open menu"
           >
-            <Menu size={28} />
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 32 32"
+              className="stroke-white"
+              fill="none"
+            >
+              <use href="/sprite.svg#icon-burger" />
+            </svg>
           </button>
         </div>
       </div>

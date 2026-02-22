@@ -44,9 +44,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     const getVariantStyle = (): React.CSSProperties => {
       if (variant === 'primary') {
-        // Primary (Registration, To apply):
-        // Normal: білий фон, темний текст
-        // Hover: прозорий фон, біла обводка, білий текст
         if (isActive) {
           return {
             backgroundColor: 'transparent',
@@ -60,10 +57,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           border: '1px solid #f9f9f9',
         };
       }
-      
-      // Outline (Log out):
-      // Normal: прозорий фон, біла обводка, білий текст
-      // Hover: білий фон, темний текст
+
       if (isActive) {
         return {
           backgroundColor: '#f9f9f9',
@@ -71,7 +65,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           border: '1px solid #f9f9f9',
         };
       }
-      
+
       return {
         backgroundColor: 'transparent',
         color: '#f9f9f9',

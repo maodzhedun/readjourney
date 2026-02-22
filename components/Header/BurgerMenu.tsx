@@ -2,7 +2,6 @@
 
 import { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useLogout } from '@/hooks/useAuth';
@@ -66,10 +65,18 @@ export default function BurgerMenu({ isOpen, onClose }: BurgerMenuProps) {
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 p-1 text-[#f9f9f9] transition-colors hover:text-[#f9f9f9]/70"
+              className="absolute right-4 top-4 p-1 transition-opacity hover:opacity-70"
               aria-label="Close menu"
             >
-              <X size={28} />
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 32 32"
+                className="stroke-[#f9f9f9]"
+                fill="none"
+              >
+                <use href="/sprite.svg#icon-close" />
+              </svg>
             </button>
 
             {/* Navigation */}

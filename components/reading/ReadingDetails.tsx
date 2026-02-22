@@ -1,9 +1,7 @@
 //components/reading/ReadingDetails.tsx
-
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { ReadingProgress } from '@/types';
 import { useDeleteReading } from '@/hooks/useReading';
 import DiaryEntry from './DiaryEntry';
@@ -22,7 +20,6 @@ export default function ReadingDetails({
   const [view, setView] = useState<'diary' | 'statistics'>('diary');
   const { mutate: deleteReading, isPending } = useDeleteReading();
 
-  // Filter only completed sessions
   const completedSessions = progress
     .filter(p => p.status === 'inactive')
     .sort(
@@ -37,186 +34,275 @@ export default function ReadingDetails({
     }
   };
 
-  // Calculate total pages read
   const totalPagesRead = completedSessions.reduce(
     (sum, p) => sum + (p.finishPage - p.startPage),
     0
   );
+  const progressPercent =
+    totalBookPages > 0
+      ? ((totalPagesRead / totalBookPages) * 100).toFixed(2)
+      : '0.00';
 
-  // Calculate progress percentage
-  const progressPercent = totalBookPages > 0
-    ? ((totalPagesRead / totalBookPages) * 100).toFixed(2)
-    : '0';
-
-  // Group entries by date for Diary
-  const groupedByDate = completedSessions.reduce((acc, entry) => {
-    const date = new Date(entry.finishReading).toLocaleDateString('uk-UA', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    });
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(entry);
-    return acc;
-  }, {} as Record<string, ReadingProgress[]>);
+  // Group sessions by date
+  const groupedByDate = completedSessions.reduce(
+    (acc, entry) => {
+      const date = new Date(entry.finishReading).toLocaleDateString('uk-UA', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(entry);
+      return acc;
+    },
+    {} as Record<string, ReadingProgress[]>
+  );
 
   return (
-    <div>
-      {/* Header with Toggle */}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        minHeight: 0,
+      }}
+    >
       <div
-        className="flex items-center justify-between"
-        style={{ marginBottom: '14px' }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 14,
+          flexShrink: 0,
+        }}
       >
         <h3
-          className="font-bold text-[#f9f9f9]"
-          style={{ fontSize: '18px' }}
+          style={{ color: '#f9f9f9', fontWeight: 700, fontSize: 18, margin: 0 }}
         >
           {view === 'diary' ? 'Diary' : 'Statistics'}
         </h3>
-        <div className="flex gap-2">
-          {/* Hourglass icon - Diary view */}
+        <div style={{ display: 'flex', gap: 8 }}>
           <button
             onClick={() => setView('diary')}
-            className={`transition-opacity ${view === 'diary' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              opacity: view === 'diary' ? 1 : 0.4,
+            }}
             aria-label="Show Diary"
           >
-            <Image
-              src="/hourglass.svg"
-              alt="Diary"
-              width={20}
-              height={20}
-            />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="#f9f9f9"
+            >
+              <use href="/sprite.svg#icon-hourglass" />
+            </svg>
           </button>
-          {/* Pie chart icon - Statistics view */}
           <button
             onClick={() => setView('statistics')}
-            className={`transition-opacity ${view === 'statistics' ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              opacity: view === 'statistics' ? 1 : 0.4,
+            }}
             aria-label="Show Statistics"
           >
-            <Image
-              src="/pie-chart.svg"
-              alt="Statistics"
-              width={20}
-              height={20}
-            />
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="#f9f9f9"
+            >
+              <use href="/sprite.svg#icon-pie-chart" />
+            </svg>
           </button>
         </div>
       </div>
 
-      {/* Diary View */}
+      {/* ── Diary view ── */}
       {view === 'diary' && (
         <div
-          className="space-y-4 overflow-y-auto pr-1"
-          style={{ maxHeight: '350px' }}
+          style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: 4 }}
         >
-          {Object.entries(groupedByDate).map(([date, entries]) => (
-            <div key={date}>
-              {entries.map((entry) => (
-                <DiaryEntry
-                  key={entry._id}
-                  entry={entry}
-                  date={date}
-                  totalPages={entries.reduce((sum, e) => sum + (e.finishPage - e.startPage), 0)}
-                  onDelete={() => handleDelete(entry._id)}
-                  isDeleting={isPending}
-                />
-              ))}
-            </div>
-          ))}
+          {Object.entries(groupedByDate).map(([date, entries]) => {
+            const dateTotalPages = entries.reduce(
+              (sum, e) => sum + (e.finishPage - e.startPage),
+              0
+            );
+            return (
+              <div key={date} style={{ marginBottom: 24 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: 8,
+                  }}
+                >
+                  <div
+                    style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      style={{ flexShrink: 0 }}
+                    >
+                      <rect
+                        x="1.5"
+                        y="1.5"
+                        width="17"
+                        height="17"
+                        rx="3"
+                        stroke="#f9f9f9"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                    <span
+                      style={{
+                        color: '#f9f9f9',
+                        fontWeight: 700,
+                        fontSize: 14,
+                        lineHeight: '20px',
+                      }}
+                    >
+                      {date}
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      color: '#686868',
+                      fontSize: 12,
+                      lineHeight: '20px',
+                    }}
+                  >
+                    {dateTotalPages} pages
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 16,
+                    paddingLeft: 28,
+                  }}
+                >
+                  {entries.map(entry => (
+                    <DiaryEntry
+                      key={entry._id}
+                      entry={entry}
+                      totalBookPages={totalBookPages}
+                      onDelete={() => handleDelete(entry._id)}
+                      isDeleting={isPending}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* Statistics View */}
+      {/* ── Statistics view ── */}
       {view === 'statistics' && (
-        <div>
-          {/* Motivational text */}
+        <div
+          style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: 4 }}
+        >
           <p
-            className="text-[#686868]"
-            style={{ fontSize: '14px', marginBottom: '20px' }}
+            style={{
+              color: '#686868',
+              fontSize: 14,
+              lineHeight: '1.57',
+              marginBottom: 20,
+            }}
           >
             Each page, each chapter is a new round of knowledge, a new step
             towards understanding. By rewriting statistics, we create our own
             reading history.
           </p>
-
-          {/* Progress Circle */}
           <div
-            className="mx-auto flex flex-col items-center rounded-xl"
             style={{
-              backgroundColor: '#262626',
-              padding: '20px',
-              maxWidth: '200px',
+              backgroundColor: '#141414',
+              borderRadius: 12,
+              padding: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            {/* Circle */}
-            <div className="relative" style={{ width: '140px', height: '140px' }}>
+            <div style={{ position: 'relative', width: 189, height: 189 }}>
               <svg
-                className="rotate-[-90deg]"
-                width="140"
-                height="140"
-                viewBox="0 0 140 140"
+                style={{ transform: 'rotate(-90deg)' }}
+                width="189"
+                height="189"
+                viewBox="0 0 189 189"
               >
-                {/* Background circle */}
                 <circle
-                  cx="70"
-                  cy="70"
-                  r="60"
+                  cx="94.5"
+                  cy="94.5"
+                  r="80"
                   fill="none"
-                  stroke="#1f1f1f"
-                  strokeWidth="10"
+                  stroke="#262626"
+                  strokeWidth="12"
                 />
-                {/* Progress circle */}
                 <circle
-                  cx="70"
-                  cy="70"
-                  r="60"
+                  cx="94.5"
+                  cy="94.5"
+                  r="80"
                   fill="none"
                   stroke="#30b94d"
-                  strokeWidth="10"
+                  strokeWidth="12"
                   strokeLinecap="round"
-                  strokeDasharray={`${(parseFloat(progressPercent) / 100) * 377} 377`}
+                  strokeDasharray={`${(parseFloat(progressPercent) / 100) * 502.65} 502.65`}
                 />
               </svg>
-              {/* Percentage text */}
               <div
-                className="absolute inset-0 flex items-center justify-center"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
                 <span
-                  className="font-bold text-[#f9f9f9]"
-                  style={{ fontSize: '20px' }}
+                  style={{ color: '#f9f9f9', fontWeight: 700, fontSize: 20 }}
                 >
-                  100%
+                  {progressPercent}%
                 </span>
               </div>
             </div>
-
-            {/* Legend */}
             <div
-              className="mt-4 flex items-center gap-2"
+              style={{
+                marginTop: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
             >
               <div
-                className="rounded-sm"
                 style={{
-                  width: '14px',
-                  height: '14px',
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
                   backgroundColor: '#30b94d',
+                  flexShrink: 0,
                 }}
               />
-              <span
-                className="font-bold text-[#f9f9f9]"
-                style={{ fontSize: '14px' }}
-              >
-                {progressPercent}%
+              <span style={{ color: '#f9f9f9', fontSize: 14 }}>
+                {totalPagesRead} pages read
               </span>
             </div>
-            <p
-              className="text-[#686868]"
-              style={{ fontSize: '12px' }}
-            >
-              {totalPagesRead} pages read
-            </p>
           </div>
         </div>
       )}

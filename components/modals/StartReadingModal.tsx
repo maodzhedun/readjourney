@@ -23,14 +23,18 @@ export default function StartReadingModal({
   if (!book) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="w-[500px] max-w-[calc(100vw-32px)]"
+    >
       <div className="flex flex-col items-center text-center">
-        {/* Book Cover */}
+        {/* Book Cover - 137 × 248 px */}
         <div
           className="relative overflow-hidden rounded-lg"
           style={{
-            width: '140px',
-            height: '208px',
+            width: '137px',
+            height: '248px',
             marginBottom: '16px',
             backgroundColor: '#262626',
           }}
@@ -39,7 +43,7 @@ export default function StartReadingModal({
             src={book.imageUrl}
             alt={book.title}
             fill
-            sizes="140px"
+            sizes="137px"
             className="object-cover"
           />
         </div>
@@ -59,9 +63,7 @@ export default function StartReadingModal({
         </p>
 
         {/* Start Reading Button */}
-        <Button onClick={onStartReading}>
-          Start reading
-        </Button>
+        <Button onClick={onStartReading}>Start reading</Button>
       </div>
     </Modal>
   );

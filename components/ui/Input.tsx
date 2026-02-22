@@ -1,5 +1,4 @@
 import { forwardRef, InputHTMLAttributes, useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -22,14 +21,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             borderRadius: '12px',
             border: error ? '1px solid #e90516' : '1px solid transparent',
             backgroundColor: '#262626',
-            padding: '10px',
+            padding: '10px 14px',
           }}
         >
           {/* Label inside input */}
           {label && (
             <span
               className="shrink-0"
-              style={{ 
+              style={{
                 color: '#686868',
                 fontSize: '14px',
                 marginRight: '8px',
@@ -56,15 +55,28 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="ml-2 shrink-0 transition-colors"
+              className="ml-2 shrink-0 transition-opacity hover:opacity-70"
               style={{
-                color: '#686868',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
               }}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 32 32"
+                className="stroke-[#686868]"
+                fill="none"
+              >
+                <use
+                  href={
+                    showPassword
+                      ? '/sprite.svg#icon-eye-off'
+                      : '/sprite.svg#icon-eye'
+                  }
+                />
+              </svg>
             </button>
           )}
         </div>

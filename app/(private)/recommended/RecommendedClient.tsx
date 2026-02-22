@@ -52,17 +52,17 @@ export default function RecommendedClient() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
+    <div className="flex flex-col lg:flex-row" style={{ gap: '16px' }}>
       {/* Dashboard */}
-      <Dashboard className="space-y-5">
+      <Dashboard>
         {/* Filters */}
-        <div>
-          <h3
+        <div style={{ marginBottom: '20px' }}>
+          <p
             className="text-[#f9f9f9]"
-            style={{ fontSize: '14px', marginBottom: '8px' }}
+            style={{ fontSize: '14px', fontWeight: 500, marginBottom: '8px' }}
           >
             Filters:
-          </h3>
+          </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <Input
               label="Book title:"
@@ -85,7 +85,9 @@ export default function RecommendedClient() {
         </div>
 
         {/* Info Block */}
-        <RecommendedInfo />
+        <div style={{ marginBottom: '20px' }}>
+          <RecommendedInfo />
+        </div>
 
         {/* Quote - hidden on mobile */}
         <div className="hidden md:block">

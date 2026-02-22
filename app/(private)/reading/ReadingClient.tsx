@@ -33,7 +33,11 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   // If there is no bookId, display an empty state
   if (!bookId) {
     return (
-      <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
+      // 158px = padding-top(32) + header(74) + margin(20) + padding-bottom(32)
+      <div
+        className="flex flex-col lg:flex-row"
+        style={{ gap: '16px', height: 'calc(100dvh - 158px)' }}
+      >
         <Dashboard>
           <p className="text-[#686868]">Select a book to start reading</p>
         </Dashboard>
@@ -134,9 +138,13 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   const minsLeft = Math.round(minutesLeft % 60);
 
   return (
-    <div className="flex flex-col lg:flex-row" style={{ gap: '20px' }}>
-      {/* Dashboard */}
-      <Dashboard className="space-y-5">
+    // height fills exactly the viewport minus layout chrome (header + paddings)
+    <div
+      className="flex flex-col lg:flex-row"
+      style={{ gap: '16px', height: 'calc(100dvh - 158px)' }}
+    >
+      {/* Dashboard — flex column, fills full height */}
+      <Dashboard>
         {/* Reading Form */}
         <AddReadingForm book={book} onFinish={handleBookFinished} />
 
@@ -151,29 +159,41 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
           <div>
             <h3
               className="font-bold text-[#f9f9f9]"
-              style={{ fontSize: '18px', marginBottom: '8px' }}
+              style={{
+                fontSize: '18px',
+                marginBottom: '8px',
+                lineHeight: '1.1',
+              }}
             >
               Progress
             </h3>
             <p
               className="text-[#686868]"
-              style={{ fontSize: '14px', marginBottom: '20px' }}
+              style={{
+                fontSize: '14px',
+                marginBottom: '20px',
+                lineHeight: '1.3',
+              }}
             >
               Here you will see when and how much you read. To record, click on
               the red button above.
             </p>
-
-            {/* Star Icon */}
             <div className="flex justify-center">
-              <Image src="/star.svg" alt="Star" width={100} height={100} />
+              <img
+                src="/images/star@1x.png"
+                srcSet="/images/star@1x.png 1x, /images/star@2x.png 2x"
+                alt="Star"
+                width={100}
+                height={100}
+              />
             </div>
           </div>
         )}
       </Dashboard>
 
-      {/* Main Content */}
+      {/* Main Content — scrollable on small screens, centered on large */}
       <div
-        className="flex flex-1 flex-col items-center rounded-[30px] bg-[#1f1f1f]"
+        className="flex flex-1 flex-col items-center overflow-y-auto rounded-[30px] bg-[#1f1f1f]"
         style={{ padding: '40px' }}
       >
         {/* Header with time left */}
@@ -181,26 +201,23 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
           <h2 className="font-bold text-[#f9f9f9]" style={{ fontSize: '28px' }}>
             My reading
           </h2>
-          {hasCompletedProgress && pagesLeft > 0 && (
+          {hasCompletedProgress && pagesLeft > 0 && avgSpeed > 0 && (
             <span className="text-[#686868]" style={{ fontSize: '14px' }}>
               {hoursLeft} hours and {minsLeft} minutes left
             </span>
           )}
         </div>
 
-        {/* Book Cover */}
+        {/* Book Cover — 224 × 340 px */}
         <div
           className="relative mb-4 overflow-hidden rounded-lg bg-[#262626]"
-          style={{
-            width: '169px',
-            height: '256px',
-          }}
+          style={{ width: '224px', height: '340px' }}
         >
           <Image
             src={book.imageUrl}
             alt={book.title}
             fill
-            sizes="169px"
+            sizes="224px"
             className="object-cover"
           />
         </div>
@@ -208,55 +225,34 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
         {/* Book Info */}
         <h3
           className="mb-1 text-center font-bold text-[#f9f9f9]"
-          style={{ fontSize: '18px' }}
+          style={{ fontSize: '20px' }}
         >
           {book.title}
         </h3>
         <p
           className="mb-6 text-center text-[#686868]"
-          style={{ fontSize: '12px' }}
+          style={{ fontSize: '14px' }}
         >
           {book.author}
         </p>
 
-        {/* Progress Circle or Red Button */}
-        {isReading ? (
-          // Active reading - show STOP button
-          <button
-            onClick={handleRecordClick}
-            disabled={isStarting || isFinishing}
-            className="flex items-center justify-center rounded-full border-2 border-[#e90516] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
-            style={{
-              width: '50px',
-              height: '50px',
-              backgroundColor: 'transparent',
-            }}
-            aria-label="Stop reading"
-          >
-            {/* Stop icon (square) */}
-            <div
-              style={{
-                width: '16px',
-                height: '16px',
-                backgroundColor: '#e90516',
-                borderRadius: '2px',
-              }}
+        {/* Start/Stop Button */}
+        <button
+          onClick={handleRecordClick}
+          disabled={isStarting || isFinishing}
+          className="transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+          aria-label={isReading ? 'Stop reading' : 'Start reading'}
+        >
+          <svg width="50" height="50" viewBox="0 0 32 32">
+            <use
+              href={
+                isReading
+                  ? '/sprite.svg#icon-stop_record'
+                  : '/sprite.svg#icon-record'
+              }
             />
-          </button>
-        ) : (
-          // Not reading - show START button (solid red circle)
-          <button
-            onClick={handleRecordClick}
-            disabled={isStarting || isFinishing}
-            className="flex items-center justify-center rounded-full transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
-            style={{
-              width: '50px',
-              height: '50px',
-              backgroundColor: '#e90516',
-            }}
-            aria-label="Start reading"
-          />
-        )}
+          </svg>
+        </button>
       </div>
 
       {/* Book Finished Modal */}

@@ -14,10 +14,27 @@ export default function AddBookSuccessModal({
   onClose,
 }: AddBookSuccessModalProps) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="w-[342px] max-w-[calc(100vw-32px)]"
+    >
       <div className="flex flex-col items-center text-center">
-        {/* Thumbs Up Emoji */}
-        <div style={{ fontSize: '50px', marginBottom: '20px' }}>👍</div>
+        {/* Ok Hand Image */}
+        <div style={{ marginBottom: '32px' }}>
+          <picture>
+            <source
+              srcSet="/images/ok_hand@1x.webp 1x, /images/ok_hand@2x.webp 2x"
+              type="image/webp"
+            />
+            <img
+              src="/images/ok_hand@1x.webp"
+              alt="Good job"
+              width={50}
+              height={50}
+            />
+          </picture>
+        </div>
 
         {/* Title */}
         <h3
@@ -30,11 +47,11 @@ export default function AddBookSuccessModal({
         {/* Message */}
         <p
           className="text-[#686868]"
-          style={{ fontSize: '14px', maxWidth: '250px' }}
+          style={{ fontSize: '14px', lineHeight: '1.5' }}
         >
           Your book is now in{' '}
-          <span className="font-bold text-[#f9f9f9]">the library!</span> The joy
-          knows no bounds and now you can start your training
+          <span className="text-[#f9f9f9]">the library!</span> The joy knows no
+          bounds and now you can start your training
         </p>
       </div>
     </Modal>

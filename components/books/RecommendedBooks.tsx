@@ -19,7 +19,7 @@ export default function RecommendedBooks({
   return (
     <ul
       className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5"
-      style={{ gap: '20px' }}
+      style={{ gap: '27px 20px' }}
     >
       {books.map((book, index) => (
         <li key={book._id}>
