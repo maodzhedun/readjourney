@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, showPasswordToggle, type, style, ...props }, ref) => {
+  ({ label, error, showPasswordToggle, type, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
     const isPassword = type === 'password';
     const inputType = isPassword && showPassword ? 'text' : type;
@@ -15,25 +15,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         <div
-          className="flex items-center transition-colors"
+          className="flex items-center rounded-[12px] bg-[#262626] px-[14px] transition-colors
+            h-[44px] md:h-[50px]"
           style={{
-            height: '50px',
-            borderRadius: '12px',
             border: error ? '1px solid #e90516' : '1px solid transparent',
-            backgroundColor: '#262626',
-            padding: '10px 14px',
           }}
         >
-          {/* Label inside input */}
           {label && (
-            <span
-              className="shrink-0"
-              style={{
-                color: '#686868',
-                fontSize: '14px',
-                marginRight: '8px',
-              }}
-            >
+            <span className="shrink-0 text-[14px] text-[#686868] mr-2">
               {label}
             </span>
           )}
@@ -41,13 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             type={inputType}
-            className="w-full outline-none"
-            style={{
-              backgroundColor: 'transparent',
-              fontSize: '14px',
-              color: '#f9f9f9',
-              border: 'none',
-            }}
+            className="w-full bg-transparent text-[14px] text-[#f9f9f9] outline-none border-none"
             {...props}
           />
 
@@ -55,12 +38,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="ml-2 shrink-0 transition-opacity hover:opacity-70"
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="ml-2 shrink-0 cursor-pointer border-none bg-transparent p-0 transition-opacity hover:opacity-70"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               <svg
                 width="20"
@@ -81,16 +60,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
 
-        {error && (
-          <p className="mt-1 text-xs" style={{ color: '#e90516' }}>
-            {error}
-          </p>
-        )}
+        {error && <p className="mt-1 text-xs text-[#e90516]">{error}</p>}
       </div>
     );
   }
 );
 
 Input.displayName = 'Input';
-
 export default Input;

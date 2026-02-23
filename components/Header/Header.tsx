@@ -21,34 +21,37 @@ export default function Header() {
       style={{ padding: '16px 20px' }}
     >
       <div className="flex items-center justify-between">
-        {/* Logo */}
-        <Logo showText className="hidden md:flex" />
-        <Logo showText={false} className="md:hidden" />
+        {/* Logo: icon+text on desktop (1440px+), icon only on tablet+mobile */}
+        <Logo showText className="hidden 2xl:flex" />
+        <Logo showText={false} className="2xl:hidden" />
 
-        {/* Desktop Navigation - centered */}
-        <UserNav className="hidden lg:flex" />
+        {/* Navigation - visible from tablet (768px+) */}
+        <UserNav className="hidden md:flex" />
 
         {/* Right Section */}
         <div className="flex items-center gap-4">
-          {/* User Avatar with name on desktop */}
-          <UserBar showName className="hidden lg:flex" />
-          <UserBar className="lg:hidden" />
+          {/* User Avatar with name on desktop (1440px+) */}
+          <UserBar showName className="hidden 2xl:flex" />
+          {/* User Avatar without name on tablet */}
+          <UserBar className="hidden md:flex 2xl:hidden" />
+          {/* User Avatar on mobile */}
+          <UserBar className="md:hidden" />
 
-          {/* Desktop Logout */}
+          {/* Logout button: visible from tablet (768px+) */}
           <Button
             onClick={() => logout()}
             isLoading={isPending}
             variant="outline"
             size="sm"
-            className="hidden lg:flex"
+            className="hidden md:flex"
           >
             Log out
           </Button>
 
-          {/* Mobile Burger Button */}
+          {/* Burger Button: mobile only (hidden on tablet+) */}
           <button
             onClick={() => setIsMenuOpen(true)}
-            className="flex h-10 w-10 items-center justify-center transition-opacity hover:opacity-70 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center transition-opacity hover:opacity-70 md:hidden"
             aria-label="Open menu"
           >
             <svg

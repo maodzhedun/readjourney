@@ -45,22 +45,22 @@ export default function BurgerMenu({ isOpen, onClose }: BurgerMenuProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* Overlay - mobile only */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
             onClick={onClose}
           />
 
-          {/* Menu Panel */}
+          {/* Menu Panel - mobile only */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed bottom-0 right-0 top-0 z-50 flex w-[200px] flex-col bg-[#262626] p-5 shadow-xl md:w-[250px] lg:hidden"
+            className="fixed bottom-0 right-0 top-0 z-50 flex w-[280px] flex-col bg-[#262626] p-5 shadow-xl md:hidden"
           >
             {/* Close Button */}
             <button

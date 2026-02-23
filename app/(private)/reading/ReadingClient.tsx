@@ -33,18 +33,15 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   // If there is no bookId, display an empty state
   if (!bookId) {
     return (
-      // 158px = padding-top(32) + header(74) + margin(20) + padding-bottom(32)
-      <div
-        className="flex flex-col lg:flex-row"
-        style={{ gap: '16px', height: 'calc(100dvh - 158px)' }}
-      >
+      // height fills viewport minus layout chrome — responsive padding
+      <div className="flex flex-col lg:flex-row" style={{ gap: '16px' }}>
         <Dashboard>
           <p className="text-[#686868]">Select a book to start reading</p>
         </Dashboard>
 
         <div
           className="flex flex-1 flex-col items-center justify-center rounded-[30px] bg-[#1f1f1f]"
-          style={{ padding: '40px' }}
+          style={{ padding: '40px', minHeight: '300px' }}
         >
           <p className="mb-4 text-6xl">📖</p>
           <p className="mb-4 text-center text-[#686868]">
@@ -138,10 +135,10 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
   const minsLeft = Math.round(minutesLeft % 60);
 
   return (
-    // height fills exactly the viewport minus layout chrome (header + paddings)
+    // On desktop (1440px): fill viewport height. On mobile/tablet: auto height, scrollable
     <div
-      className="flex flex-col lg:flex-row"
-      style={{ gap: '16px', height: 'calc(100dvh - 158px)' }}
+      className="flex flex-col 2xl:flex-row 2xl:h-[calc(100dvh-158px)]"
+      style={{ gap: '16px' }}
     >
       {/* Dashboard — flex column, fills full height */}
       <Dashboard>
@@ -192,10 +189,7 @@ export default function ReadingClient({ bookId }: ReadingClientProps) {
       </Dashboard>
 
       {/* Main Content — scrollable on small screens, centered on large */}
-      <div
-        className="flex flex-1 flex-col items-center overflow-y-auto rounded-[30px] bg-[#1f1f1f]"
-        style={{ padding: '40px' }}
-      >
+      <div className="flex flex-1 flex-col items-center overflow-y-auto rounded-[30px] bg-[#1f1f1f] p-5 md:p-10">
         {/* Header with time left */}
         <div className="mb-10 flex w-full items-center justify-between">
           <h2 className="font-bold text-[#f9f9f9]" style={{ fontSize: '28px' }}>

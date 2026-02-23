@@ -4,10 +4,13 @@
 @source "../components/**/*.{js,ts,jsx,tsx}";
 @source "../app/**/*.{js,ts,jsx,tsx}";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 body {
@@ -16,10 +19,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Fluid typography for mobile */
+/* Fluid typography for mobile (320px → 375px) */
 @media (max-width: 374px) {
   html {
     font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (375 - 320)));
+  }
+}
+
+/* Fluid layout padding for mobile (320px → 374px) */
+@media (max-width: 374px) {
+  .fluid-p {
+    padding: calc(12px + (16 - 12) * ((100vw - 320px) / (374 - 320)));
   }
 }
 

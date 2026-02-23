@@ -22,7 +22,7 @@ export default function MyLibraryBooks({
 
   return (
     <ul
-      className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5"
+      className="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5"
       style={{ gap: '27px 20px' }}
     >
       {books.map((book, index) => (

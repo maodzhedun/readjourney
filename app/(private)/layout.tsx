@@ -8,10 +8,10 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen bg-[#141414]" style={{ padding: '32px' }}>
+    <main className="min-h-screen bg-[#141414] p-5 2xl:p-8">
       <div className="mx-auto max-w-[1280px]">
         <Header />
-        <div style={{ marginTop: '20px' }}>{children}</div>
+        <div className="mt-5">{children}</div>
       </div>
     </main>
   );

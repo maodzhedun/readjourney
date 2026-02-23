@@ -7,50 +7,33 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      style={{
-        minHeight: '100dvh',
-        backgroundColor: '#141414',
-        padding: '20px',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div className="min-h-dvh bg-[#141414] p-5 md:p-8">
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '20px',
-          maxWidth: '1280px',
-          margin: '0 auto',
-
-          height: 'calc(100dvh - 40px)',
-          minHeight: '700px',
-        }}
+        className="
+          mx-auto
+          flex
+          max-w-[1280px]
+          flex-col
+          gap-4
+          min-h-[calc(100dvh-40px)]
+          md:h-[calc(100dvh-64px)]
+          2xl:flex-row
+          2xl:gap-8
+        "
       >
         <div
-          style={{
-            width: '600px',
-            minWidth: '600px',
-            backgroundColor: '#1f1f1f',
-            borderRadius: '30px',
-
-            padding: '40px 64px',
-            display: 'flex',
-            flexDirection: 'column',
-
-            overflowY: 'auto',
-            overflowX: 'hidden',
-          }}
+          className="
+            flex w-full flex-col
+            rounded-[30px] bg-[#1f1f1f]
+            p-5
+            md:h-full md:p-8
+            2xl:w-[600px] 2xl:min-w-[600px]
+          "
         >
+          {/* LOGO */}
           <Link
             href="/"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              flexShrink: 0,
-            }}
+            className="flex shrink-0 items-center gap-2 no-underline"
           >
             <Image
               src="/images/logo.svg"
@@ -58,47 +41,29 @@ export default function AuthLayout({
               width={42}
               height={17}
               priority
-              style={{ display: 'block', flexShrink: 0 }}
+              className="block shrink-0"
             />
-            <span
-              style={{
-                color: '#f9f9f9',
-                fontWeight: 700,
-                fontSize: '18px',
-                lineHeight: 1,
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <span className="text-[18px] font-bold uppercase leading-none tracking-[0.05em] text-[#f9f9f9]">
               Read Journey
             </span>
           </Link>
 
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-
-              minHeight: 0,
-            }}
-          >
+          <div className="flex min-h-0 flex-1 flex-col justify-center">
             {children}
           </div>
         </div>
 
         <div
-          style={{
-            flex: 1,
-            backgroundColor: '#1f1f1f',
-            borderRadius: '30px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-          }}
+          className="
+            hidden
+            2xl:flex 2xl:h-full
+            flex-1
+            items-center
+            justify-center
+            overflow-hidden
+            rounded-[30px]
+            bg-[#1f1f1f]
+          "
         >
           <picture>
             <source
@@ -108,7 +73,8 @@ export default function AuthLayout({
             <img
               src="/images/iphone@1x.webp"
               alt="Read Journey App"
-              style={{ height: '88%', width: 'auto', display: 'block' }}
+              className="block"
+              style={{ height: '88%', width: 'auto' }}
             />
           </picture>
         </div>

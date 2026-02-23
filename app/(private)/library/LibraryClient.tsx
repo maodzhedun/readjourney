@@ -54,7 +54,7 @@ export default function LibraryClient() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row" style={{ gap: '16px' }}>
+    <div className="flex flex-col 2xl:flex-row" style={{ gap: '16px' }}>
       {/* Dashboard */}
       <Dashboard>
         {/* Add Book Form */}
@@ -67,10 +67,7 @@ export default function LibraryClient() {
       </Dashboard>
 
       {/* Main Content */}
-      <div
-        className="flex flex-1 flex-col rounded-[30px] bg-[#1f1f1f]"
-        style={{ padding: '40px 40px 28px' }}
-      >
+      <div className="flex flex-1 flex-col rounded-[30px] bg-[#1f1f1f] p-5 md:p-8 2xl:px-10">
         {/* Header with Filter */}
         <div
           className="flex items-center justify-between"

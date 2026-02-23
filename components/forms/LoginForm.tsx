@@ -15,30 +15,33 @@ interface FormData {
 
 export default function LoginForm() {
   const { mutate: login, isPending } = useLogin();
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: yupResolver(loginSchema),
   });
 
   return (
     <div>
       <h1
-        style={{
-          fontSize: '64px',
-          fontWeight: 700,
-          lineHeight: 1.06,
-          letterSpacing: '-0.02em',
-          color: '#f9f9f9',
-          marginBottom: '32px',
-          maxWidth: '444px',
-        }}
+        className="
+          mb-6
+          max-w-[295px] md:max-w-[444px]
+          font-bold leading-[1.06] tracking-[-0.02em] text-[#f9f9f9]
+          text-[clamp(32px,8vw,40px)]
+          md:text-[clamp(40px,5.5vw,48px)]
+          2xl:text-[64px]
+        "
       >
         Expand your mind, reading{' '}
-        <span style={{ color: '#686868' }}>a book</span>
+        <span className="text-[#686868]">a book</span>
       </h1>
 
       <form
         onSubmit={handleSubmit(data => login(data))}
-        style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '472px' }}
+        className="flex w-full flex-col gap-[14px] md:max-w-[472px]"
       >
         <Input
           {...register('email')}
@@ -56,27 +59,18 @@ export default function LoginForm() {
           error={errors.password?.message}
         />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '20px' }}>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
           <Button
             type="submit"
             variant="primary"
             isLoading={isPending}
-            style={{ width: '225px', height: '52px', flexShrink: 0 }}
+            className="!w-[140px] !h-[42px] md:!w-[225px] md:!h-[52px]"
           >
             Log In
           </Button>
           <Link
             href="/register"
-            style={{
-              color: '#686868',
-              fontSize: '14px',
-              lineHeight: '18px',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#f9f9f9')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#686868')}
+            className="text-sm leading-[18px] text-[#686868] no-underline transition-colors hover:text-[#f9f9f9]"
           >
             Don&apos;t have an account?
           </Link>
