@@ -3,10 +3,8 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { useRegister } from '@/hooks/useAuth';
 import { registerSchema } from '@/utils/validationSchemas';
-
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 
@@ -18,51 +16,57 @@ interface FormData {
 
 export default function RegisterForm() {
   const { mutate: register, isPending } = useRegister();
-
   const {
-    register: registerField,
+    register: rf,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmit = (data: FormData) => {
-    register(data);
-  };
-
   return (
-    <>
+    <div>
       <h1
-        className="text-[32px] font-bold leading-tight tracking-[0.02em] md:text-[64px]"
-        style={{ color: '#f9f9f9', marginTop: '40px', marginBottom: '40px' }}
+        style={{
+          fontSize: '64px',
+          fontWeight: 700,
+          lineHeight: 1.06,
+          letterSpacing: '-0.02em',
+          color: '#f9f9f9',
+          marginBottom: '32px',
+
+          maxWidth: '444px',
+        }}
       >
         Expand your mind, reading{' '}
         <span style={{ color: '#686868' }}>a book</span>
       </h1>
 
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col"
-        style={{ gap: '14px' }}
+        onSubmit={handleSubmit(data => register(data))}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '14px',
+
+          width: '472px',
+        }}
       >
         <Input
-          {...registerField('name')}
+          {...rf('name')}
           label="Name:"
           placeholder="Ilona Ratushniak"
           error={errors.name?.message}
         />
-
         <Input
-          {...registerField('email')}
+          {...rf('email')}
           type="email"
           label="Mail:"
           placeholder="Your@email.com"
           error={errors.email?.message}
         />
-
         <Input
-          {...registerField('password')}
+          {...rf('password')}
           type="password"
           label="Password:"
           placeholder="Yourpasswordhere"
@@ -71,23 +75,38 @@ export default function RegisterForm() {
         />
 
         <div
-          className="flex items-center"
-          style={{ gap: '14px', marginTop: '8px' }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            marginTop: '20px',
+          }}
         >
-          <Button type="submit" variant="primary" isLoading={isPending}>
+          <Button
+            type="submit"
+            variant="primary"
+            isLoading={isPending}
+            style={{ width: '225px', height: '52px', flexShrink: 0 }}
+          >
             Registration
           </Button>
           <Link
             href="/login"
-            className="text-sm no-underline transition-colors hover:underline hover:underline-offset-2"
-            style={{ color: '#686868' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#f9f9f9')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#686868')}
+            style={{
+              color: '#686868',
+              fontSize: '14px',
+              lineHeight: '18px',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#f9f9f9')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#686868')}
           >
             Already have an account?
           </Link>
         </div>
       </form>
-    </>
+    </div>
   );
 }

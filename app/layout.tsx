@@ -1,5 +1,3 @@
-//app/layout.tsx
-
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Providers from './providers';
@@ -93,8 +91,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-[#141414] font-sans text-[#f9f9f9] antialiased">
+    <html lang="en" className={inter.variable} style={{ height: '100%' }}>
+      <body className="h-full bg-[#141414] font-sans text-[#f9f9f9] antialiased">
         <Providers>
           <AuthProvider>{children}</AuthProvider>
         </Providers>

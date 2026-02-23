@@ -6,6 +6,7 @@ import { isAxiosError } from 'axios';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
     const response = await api.post('/users/signup', body);
 
     const cookieStore = await cookies();
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge: 60 * 60, // 1 hour
       path: '/',
     });
 
